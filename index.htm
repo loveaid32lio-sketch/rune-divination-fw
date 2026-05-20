@@ -2,655 +2,907 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ルーン占い 🔮</title>
-
-    <!-- PWA設定 -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="icon.svg">
-    <meta name="theme-color" content="#2d4a3a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>ルーン、一枚引き | Forest Works</title>
+    <meta name="theme-color" content="#4a6741">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SUMI ルーン占い">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --green-deep: #4a6741;
+            --green-light: #e8ede7;
+            --beige: #f9f8f6;
+            --dark: #2c362a;
+            --accent: #c28f79;
+            --green-mid: #6a8b60;
+            --text-main: #3a4438;
+            --text-sub: #7a8c76;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+            background-color: var(--beige);
+            color: var(--text-main);
             min-height: 100vh;
-            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a4a 50%, #1a3a3a 100%);
-            padding: 20px;
+            overflow-x: hidden;
         }
 
-        .container {
-            background: linear-gradient(to bottom, #2d4a3a 0%, #1f3a32 100%);
-            border: 3px solid #4a7a6a;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.6),
-                inset 0 1px 0 rgba(212, 175, 55, 0.2),
-                0 0 30px rgba(212, 175, 55, 0.1);
-            max-width: 600px;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* 和風の水墨画テクスチャ */
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(212, 175, 55, 0.02) 2px,
-                    rgba(212, 175, 55, 0.02) 4px
-                ),
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 1px,
-                    rgba(212, 175, 55, 0.01) 1px,
-                    rgba(212, 175, 55, 0.01) 2px
-                );
-            pointer-events: none;
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-        }
-
-        h1 {
-            color: #d4af37;
-            margin-bottom: 10px;
-            font-size: 32px;
-            text-align: center;
-            text-shadow:
-                0 0 10px rgba(212, 175, 55, 0.5),
-                0 0 20px rgba(212, 175, 55, 0.3),
-                1px 1px 2px rgba(0, 0, 0, 0.5);
-            font-weight: 600;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #8ab48a;
-            margin-bottom: 30px;
-            font-size: 14px;
-            font-style: italic;
-            opacity: 0.8;
-        }
-
-        .rune-display {
-            background: linear-gradient(135deg, rgba(45, 90, 74, 0.5) 0%, rgba(31, 58, 50, 0.5) 100%);
-            border: 2px solid #4a7a6a;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px 0;
-            text-align: center;
-            box-shadow:
-                inset 0 2px 5px rgba(0, 0, 0, 0.3),
-                0 0 20px rgba(212, 175, 55, 0.1);
-            min-height: 250px;
+        /* ========== HEADER ========== */
+        .site-header {
+            background-color: var(--dark);
+            padding: 16px 24px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .site-logo {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--green-light);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .site-sub {
+            font-size: 10px;
+            color: var(--text-sub);
+            letter-spacing: 0.15em;
+        }
+
+        /* ========== INTRO SECTION ========== */
+        .intro-section {
+            padding: 48px 28px 40px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .intro-eyebrow {
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        .intro-title {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--dark);
+            line-height: 1.4;
+            margin-bottom: 28px;
+            letter-spacing: 0.04em;
+        }
+
+        .intro-divider {
+            width: 32px;
+            height: 1px;
+            background-color: var(--accent);
+            margin-bottom: 28px;
+        }
+
+        .intro-body {
+            font-size: 14px;
+            line-height: 2.0;
+            color: var(--text-main);
+            letter-spacing: 0.03em;
+        }
+
+        .intro-body p {
+            margin-bottom: 1em;
+        }
+
+        .intro-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ========== RUNE SECTION ========== */
+        .rune-section {
+            padding: 16px 28px 48px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .rune-section-label {
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 32px;
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        /* ========== CARD SCENE ========== */
+        .card-scene {
+            perspective: 1200px;
+            width: 200px;
+            height: 280px;
+            margin: 0 auto 32px;
+            cursor: pointer;
+        }
+
+        .card-scene:focus {
+            outline: none;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 12px;
+        }
+
+        /* カード表面（引く前） */
+        .card-front {
+            background-color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
-            backdrop-filter: blur(10px);
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
         }
 
-        .rune-image {
-            font-size: 120px;
-            font-weight: bold;
-            color: #d4af37;
-            text-shadow:
-                0 0 20px rgba(212, 175, 55, 0.8),
-                0 0 40px rgba(212, 175, 55, 0.4),
-                0 0 60px rgba(138, 180, 138, 0.2),
-                2px 2px 4px rgba(0, 0, 0, 0.5);
+        .card-front-pattern {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            opacity: 0.15;
+            background-image:
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(232, 237, 231, 0.4) 8px,
+                    rgba(232, 237, 231, 0.4) 9px
+                );
+        }
+
+        .card-front-inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-front-symbol {
+            font-size: 40px;
+            color: rgba(232, 237, 231, 0.3);
+        }
+
+        .card-front-text {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 11px;
+            color: rgba(232, 237, 231, 0.5);
+            letter-spacing: 0.2em;
+        }
+
+        .card-front-hint {
+            font-size: 9px;
+            color: rgba(232, 237, 231, 0.3);
+            letter-spacing: 0.1em;
+            margin-top: 4px;
+        }
+
+        /* カード裏面（引いた後） */
+        .card-back {
+            background-color: var(--green-light);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            gap: 12px;
+            border: 1px solid rgba(74, 103, 65, 0.15);
+        }
+
+        .card-back-rune {
+            font-size: 56px;
+            color: var(--dark);
+            line-height: 1;
             transition: transform 0.3s ease;
-            opacity: 0.95;
-            letter-spacing: 10px;
         }
 
-        .rune-image.flipped {
+        .card-back-rune.is-reversed {
             transform: scaleY(-1);
         }
 
-        .rune-info {
-            color: #c8dcc8;
-        }
-
-        .rune-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #d4af37;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-        }
-
-        .rune-position {
-            font-size: 14px;
-            color: #8ab48a;
-            margin-bottom: 15px;
+        .card-back-name {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 18px;
             font-weight: 600;
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px rgba(138, 180, 138, 0.3);
+            color: var(--dark);
+            letter-spacing: 0.05em;
         }
 
-        .rune-meaning {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #d4e4d4;
-            background: rgba(45, 90, 74, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(74, 122, 106, 0.5);
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        button {
-            flex: 1;
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .card-back-position {
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: 1px;
+        }
+
+        .card-back-divider {
+            width: 24px;
+            height: 1px;
+            background-color: var(--green-deep);
+            opacity: 0.3;
+        }
+
+        .card-back-keyword {
+            font-size: 10px;
+            color: var(--green-deep);
+            letter-spacing: 0.1em;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* ========== DRAW INSTRUCTION ========== */
+        .draw-instruction {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .draw-instruction p {
+            font-size: 12px;
+            color: var(--text-sub);
+            letter-spacing: 0.05em;
+            line-height: 1.8;
+        }
+
+        /* ========== MESSAGE AREA ========== */
+        .message-area {
+            background-color: white;
+            border-radius: 12px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s;
+            display: none;
+        }
+
+        .message-area.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .message-label {
+            font-size: 9px;
+            letter-spacing: 0.25em;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 2.0;
+            color: var(--text-main);
+            letter-spacing: 0.03em;
+        }
+
+        /* ========== ACTION BUTTONS ========== */
+        .action-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 0;
         }
 
         .btn-draw {
-            background: linear-gradient(135deg, #4a7a6a 0%, #2d5a4a 100%);
-            color: #d4af37;
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.4),
-                0 0 15px rgba(212, 175, 55, 0.2);
-            border: 1px solid #d4af37;
-            font-weight: 700;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--dark);
+            color: var(--green-light);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Shippori Mincho', serif;
+            font-size: 14px;
+            letter-spacing: 0.15em;
+            cursor: pointer;
+            transition: background-color 0.25s ease, transform 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-draw:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 6px 20px rgba(0, 0, 0, 0.5),
-                0 0 25px rgba(212, 175, 55, 0.4);
-            background: linear-gradient(135deg, #5a8a7a 0%, #3d6a5a 100%);
+            background-color: var(--green-deep);
         }
 
         .btn-draw:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         .btn-reset {
-            background: rgba(45, 90, 74, 0.5);
-            color: #8ab48a;
-            border: 2px solid #4a7a6a;
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: var(--text-sub);
+            border: 1px solid rgba(122, 140, 118, 0.3);
+            border-radius: 8px;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-reset:hover {
-            background: rgba(45, 90, 74, 0.7);
-            color: #a8c4a8;
+            border-color: var(--text-sub);
+            color: var(--text-main);
         }
 
-        .intro {
-            background: rgba(74, 122, 106, 0.3);
-            border-left: 4px solid #d4af37;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            color: #c8dcc8;
-            font-size: 13px;
-            line-height: 1.6;
+        /* ========== SECTION SEPARATOR ========== */
+        .section-separator {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
-        .intro strong {
-            display: block;
-            margin-bottom: 8px;
+        .section-separator::before,
+        .section-separator::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(74, 103, 65, 0.15);
+        }
+
+        .section-separator span {
             font-size: 14px;
-            color: #d4af37;
+            color: rgba(74, 103, 65, 0.3);
         }
 
-        .line-cta {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(138, 180, 138, 0.1) 100%);
-            border: 2px solid #d4af37;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 30px;
-            text-align: center;
+        /* ========== LINE CTA SECTION ========== */
+        .line-section {
+            padding: 48px 28px 56px;
+            max-width: 480px;
+            margin: 0 auto;
         }
 
-        .cta-text {
-            margin-bottom: 15px;
-            color: #c8dcc8;
+        .line-eyebrow {
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-family: 'Shippori Mincho', serif;
         }
 
-        .cta-text strong {
-            display: block;
-            color: #d4af37;
-            font-size: 16px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-        }
-
-        .cta-text p {
-            font-size: 13px;
+        .line-title {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark);
             line-height: 1.6;
-            color: #d4e4d4;
-            margin: 0;
+            margin-bottom: 20px;
+            letter-spacing: 0.04em;
+        }
+
+        .line-divider {
+            width: 32px;
+            height: 1px;
+            background-color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .line-body {
+            font-size: 13px;
+            line-height: 1.9;
+            color: var(--text-main);
+            margin-bottom: 28px;
+            letter-spacing: 0.03em;
         }
 
         .btn-line {
-            display: inline-block;
-            background: linear-gradient(135deg, #00b900 0%, #00a000 100%);
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: #00b900;
             color: white;
-            padding: 12px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            margin: 15px 0;
-            box-shadow:
-                0 4px 15px rgba(0, 185, 0, 0.3),
-                0 0 10px rgba(0, 185, 0, 0.2);
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
             border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.25s ease, transform 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-line:hover {
-            transform: translateY(-2px);
-            box-shadow:
-                0 6px 20px rgba(0, 185, 0, 0.4),
-                0 0 15px rgba(0, 185, 0, 0.3);
-            background: linear-gradient(135deg, #00d900 0%, #00b900 100%);
+            background-color: #009c00;
         }
 
         .btn-line:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
-        .cta-note {
+        .line-note {
             font-size: 11px;
-            color: #8ab48a;
-            margin-top: 10px;
-            font-style: italic;
+            color: var(--text-sub);
+            text-align: center;
+            margin-top: 12px;
+            letter-spacing: 0.05em;
         }
 
-        .consult-block {
-            background: linear-gradient(135deg, rgba(74, 122, 106, 0.2) 0%, rgba(45, 90, 74, 0.2) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 15px;
+        /* ========== FOOTER ========== */
+        .site-footer {
+            background-color: var(--dark);
+            padding: 24px;
             text-align: center;
         }
 
-        .consult-message strong {
-            display: block;
-            color: #d4af37;
-            font-size: 15px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        .footer-text {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 11px;
+            color: rgba(232, 237, 231, 0.4);
+            letter-spacing: 0.2em;
         }
 
-        .consult-message p {
-            font-size: 13px;
-            line-height: 1.8;
-            color: #d4e4d4;
-            margin-bottom: 15px;
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .hidden {
-            display: none !important;
+        .intro-section {
+            animation: fadeInUp 0.6s ease both;
         }
 
-        @media (max-width: 480px) {
-            h1 {
+        /* ========== CARD PULSE (before draw) ========== */
+        @keyframes cardPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(74, 103, 65, 0); }
+            50% { box-shadow: 0 0 0 6px rgba(74, 103, 65, 0.08); }
+        }
+
+        .card-scene:not(.card-scene--drawn) .card {
+            animation: cardPulse 3s ease infinite;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 360px) {
+            .intro-title {
                 font-size: 24px;
             }
 
-            .rune-image {
-                font-size: 80px;
+            .card-scene {
+                width: 172px;
+                height: 240px;
             }
 
-            .rune-meaning {
-                font-size: 14px;
+            .card-back-rune {
+                font-size: 46px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1>🔮 ルーン占い</h1>
-            <p class="subtitle">北欧の神秘からのメッセージ</p>
 
-            <div id="intro" class="intro">
-                <strong>✨ 使い方</strong>
-                「ルーンを引く」ボタンをクリックして、あなたへのメッセージを受け取ってください。ルーンは正位置と逆位置で異なる意味を持ちます。
-            </div>
+    <!-- HEADER -->
+    <header class="site-header">
+        <p class="site-logo">Forest Works</p>
+        <p class="site-sub">ウィメンズマルマ</p>
+    </header>
 
-            <div id="runeDisplay" class="rune-display hidden">
-                <div class="rune-image" id="runeImage">ᚠ</div>
-                <div class="rune-info">
-                    <div class="rune-name" id="runeName">Fehu</div>
-                    <div class="rune-position" id="runePositionLabel">正位置</div>
-                    <div class="rune-meaning" id="runeMeaning">意味が表示されます</div>
+    <!-- INTRO -->
+    <section class="intro-section">
+        <p class="intro-eyebrow">Rune Reading</p>
+        <h1 class="intro-title">ルーン、一枚引き</h1>
+        <div class="intro-divider"></div>
+        <div class="intro-body">
+            <p>ルーン占いは、あなた自身の直感がそのまま現れるツールです。</p>
+            <p>直感とは、自然と自分と向き合っていくことで育まれる、本来あなたの内側にあるもの。ルーンの起源もまた、自然の産物です。石や木に刻まれた古い文字たちが、静かにあなたの内側へと語りかけます。</p>
+        </div>
+    </section>
+
+    <!-- RUNE SECTION -->
+    <section class="rune-section">
+        <p class="rune-section-label">Draw a Rune</p>
+
+        <!-- CARD -->
+        <div class="card-scene" id="cardScene" tabindex="0" role="button" aria-label="カードをタップしてルーンを引く" onclick="onCardTap()">
+            <div class="card" id="card">
+
+                <!-- 表面（引く前） -->
+                <div class="card-face card-front">
+                    <div class="card-front-pattern"></div>
+                    <div class="card-front-inner">
+                        <div class="card-front-symbol">ᚠ</div>
+                        <p class="card-front-text">カードをタップ</p>
+                        <p class="card-front-hint">tap to draw</p>
+                    </div>
                 </div>
-            </div>
 
-            <div id="consultBlock" class="consult-block hidden">
-                <div class="consult-message">
-                    <strong>🌿 このルーンの意味、もっと深く知りたいですか？</strong>
-                    <p>ルーンが示すメッセージは、あなたの今の状況や悩みによってさらに深い意味を持ちます。「自分にとってどういう意味なんだろう？」と感じたら、ぜひ気軽にご相談ください。あなたの状況に合わせたルーン解釈を一緒に読み解きます。</p>
+                <!-- 裏面（引いた後） -->
+                <div class="card-face card-back">
+                    <div class="card-back-rune" id="cardRune">ᚠ</div>
+                    <div class="card-back-name" id="cardName">—</div>
+                    <div class="card-back-position" id="cardPosition">正位置</div>
+                    <div class="card-back-divider"></div>
+                    <div class="card-back-keyword" id="cardKeyword">—</div>
                 </div>
-                <a href="https://lin.ee/NhTXkU1" class="btn-line" target="_blank">
-                    💬 LINEで相談してみる
-                </a>
-                <p class="cta-note">お気軽にどうぞ。お返事します。</p>
-            </div>
 
-            <div class="button-group">
-                <button class="btn-draw" onclick="drawRune()">ルーンを引く</button>
-                <button class="btn-reset" onclick="resetRune()">クリア</button>
-            </div>
-
-            <div class="line-cta">
-                <div class="cta-text">
-                    <strong>✨ ルーンの詳しい意味を知りたい方へ</strong>
-                    <p>LINE友達登録すると、全24ルーン＋ブランクルーンの詳細な説明と、より深い占い機能が使えます。</p>
-                </div>
-                <a href="https://lin.ee/NhTXkU1" class="btn-line" target="_blank">
-                    📱 LINE友達登録（詳細版へ）
-                </a>
             </div>
         </div>
-    </div>
+
+        <!-- DRAW INSTRUCTION -->
+        <div class="draw-instruction" id="drawInstruction">
+            <p>カードをタップして<br>今日のルーンを受け取ってください</p>
+        </div>
+
+        <!-- MESSAGE AREA -->
+        <div class="message-area" id="messageArea">
+            <p class="message-label">Message</p>
+            <p class="message-text" id="messageText">—</p>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="action-area">
+            <button class="btn-draw" id="btnDraw" onclick="drawRune()">ルーンを引く</button>
+            <button class="btn-reset" id="btnReset" onclick="resetRune()" style="display:none;">もう一度引き直す</button>
+        </div>
+    </section>
+
+    <!-- SEPARATOR -->
+    <div class="section-separator"><span>＊</span></div>
+
+    <!-- LINE CTA -->
+    <section class="line-section">
+        <p class="line-eyebrow">Go Deeper</p>
+        <h2 class="line-title">もっと深く、<br>ルーンと向き合う</h2>
+        <div class="line-divider"></div>
+        <p class="line-body">LINE公式アカウントの友達登録で、25枚すべてのルーンの詳細な意味・逆位置・実践的なメッセージが読めます。あなたのルーンが示す深いメッセージを、一緒に受け取っていきましょう。</p>
+        <a href="https://lin.ee/yMMcwya" class="btn-line" target="_blank" rel="noopener">
+            友達追加して詳細を見る
+        </a>
+        <p class="line-note">LINE公式アカウント ・ 登録無料</p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <p class="footer-text">Forest Works / ウィメンズマルマ</p>
+    </footer>
 
     <script>
-        // ルーン文字のデータベース（V3基準）
+        // ===== ルーンデータ（25枚） =====
         const runes = [
             {
                 name: "Fehu",
                 symbol: "ᚠ",
+                keyword: { upright: "豊かさ・繁栄", reversed: "強欲・浪費" },
                 meaning: {
-                    upright: "段階的な努力により豊かな成果を得る、物質的な豊かさと繁栄",
-                    reversed: "強欲さや無駄づかい、経済的な課題"
+                    upright: "段階的な努力により豊かな成果を得る時。物質的な豊かさと繁栄が、あなたの前に開かれています。",
+                    reversed: "強欲さや無駄づかいに気をつけて。経済的な課題が試練として訪れているかもしれません。"
                 }
             },
             {
                 name: "Uruz",
                 symbol: "ᚢ",
+                keyword: { upright: "生命力・勇気", reversed: "疲弊・枯渇" },
                 meaning: {
-                    upright: "本来の力強さと生命力、困難を打ち抜く勇気",
-                    reversed: "エネルギーが枯渇、心身の疲弊"
+                    upright: "本来の力強さと生命力が満ちています。困難を打ち抜く勇気が、今のあなたの中にあります。",
+                    reversed: "エネルギーが枯渇しているサイン。心身の疲弊に、静かに向き合う時かもしれません。"
                 }
             },
             {
                 name: "Thurisaz",
                 symbol: "ᚦ",
+                keyword: { upright: "試練と成長", reversed: "争い・警戒" },
                 meaning: {
-                    upright: "試練を通じた成長と変化、守られている時期",
-                    reversed: "争いや悪い影響、警戒が必要な時期"
+                    upright: "試練を通じた成長と変化の時。あなたは今、守られながら変容の道を歩んでいます。",
+                    reversed: "争いや悪い影響が近くにあるかもしれません。警戒心を持って進む時です。"
                 }
             },
             {
                 name: "Ansuz",
                 symbol: "ᚨ",
+                keyword: { upright: "叡智・言葉", reversed: "誤解・混乱" },
                 meaning: {
-                    upright: "知識と叡智による導き、言葉の力を信じる時期",
-                    reversed: "誤解や情報の混乱、聞き間違い"
+                    upright: "知識と叡智による導きがあります。言葉の力を信じ、内なる声に耳を傾けてください。",
+                    reversed: "誤解や情報の混乱が生じやすい時。言葉を慎重に扱うことが大切です。"
                 }
             },
             {
                 name: "Raidho",
                 symbol: "ᚱ",
+                keyword: { upright: "前進・旅", reversed: "停滞・迷い" },
                 meaning: {
-                    upright: "人生の新しいステージへの移動、スムーズな前進",
-                    reversed: "停滞や遅延、方向転換の必要性"
+                    upright: "人生の新しいステージへと移動する時。スムーズな前進があなたを待っています。",
+                    reversed: "停滞や遅延を感じているなら、方向転換の必要があるかもしれません。"
                 }
             },
             {
                 name: "Kenaz",
                 symbol: "ᚲ",
+                keyword: { upright: "創造・情熱", reversed: "停滞・無気力" },
                 meaning: {
-                    upright: "内からの光、創造的な情熱が目覚める",
-                    reversed: "やる気の喪失、物事が進まない停滞感"
+                    upright: "内からの光が灯っています。創造的な情熱が目覚め、あなたを前へと導きます。",
+                    reversed: "やる気の喪失を感じているかもしれません。物事が進まない停滞感と向き合う時です。"
                 }
             },
             {
                 name: "Gebo",
                 symbol: "ᚷ",
+                keyword: { upright: "調和・絆" },
                 meaning: {
-                    upright: "与えることと受け取るバランスの中の調和、絆の深まり"
+                    upright: "与えることと受け取ることのバランスの中に調和があります。絆が深まっていく時です。"
                 }
             },
             {
                 name: "Wunjo",
                 symbol: "ᚹ",
+                keyword: { upright: "喜び・達成", reversed: "失望・期待とのズレ" },
                 meaning: {
-                    upright: "喜びと達成感、願いが形になる時期",
-                    reversed: "失望や悔しさ、期待と現実のズレ"
+                    upright: "喜びと達成感が訪れます。願いが形になる時期がやってきています。",
+                    reversed: "失望や悔しさを感じているかもしれません。期待と現実のズレを静かに見つめる時です。"
                 }
             },
             {
                 name: "Hagalaz",
                 symbol: "ᚺ",
+                keyword: { upright: "変革・再生" },
                 meaning: {
-                    upright: "避けられない変革、古いものが壊れ新しい始まりが来る"
+                    upright: "避けられない変革の時。古いものが壊れ、その先に新しい始まりが芽吹いてきます。"
                 }
             },
             {
                 name: "Nauthiz",
                 symbol: "ᚾ",
+                keyword: { upright: "忍耐・鍛錬", reversed: "疲弊・無理" },
                 meaning: {
-                    upright: "困難を通じた自己鍛錬、必要とされる我慢と工夫",
-                    reversed: "やり過ぎによる疲弊、無理を続けている"
+                    upright: "困難を通じた自己鍛錬の時です。必要とされる我慢と工夫が、あなたを強くします。",
+                    reversed: "やり過ぎによる疲弊のサイン。無理を続けていないか、自分に問いかけてみてください。"
                 }
             },
             {
                 name: "Isa",
                 symbol: "ᛁ",
+                keyword: { upright: "静止・内省" },
                 meaning: {
-                    upright: "今は待つべき時、静かに内面を見つめる期間"
+                    upright: "今は待つべき時。静かに内面を見つめ、動かずにいることが最善の選択です。"
                 }
             },
             {
                 name: "Jera",
                 symbol: "ᛃ",
+                keyword: { upright: "収穫・循環" },
                 meaning: {
-                    upright: "季節の循環と自然な流れ、蒔いた種が実を結ぶ時期"
+                    upright: "季節の循環と自然な流れの中にいます。蒔いた種が実を結ぶ時が近づいています。"
                 }
             },
             {
                 name: "Eihwaz",
                 symbol: "ᛇ",
+                keyword: { upright: "変容・安定" },
                 meaning: {
-                    upright: "大きな変容の中での安定、信念を持って進む"
+                    upright: "大きな変容の中でも、あなたは揺るぎなく立っています。信念を持って進んでください。"
                 }
             },
             {
                 name: "Perthro",
                 symbol: "ᛈ",
+                keyword: { upright: "可能性・運命", reversed: "秘密・混乱" },
                 meaning: {
-                    upright: "隠されていた可能性が開く、運命の導き",
-                    reversed: "秘密が壊れる、予期しない展開で混乱"
+                    upright: "隠されていた可能性が開かれていきます。運命の導きに、静かに身を委ねてみてください。",
+                    reversed: "秘密が明らかになり、予期しない展開が訪れるかもしれません。"
                 }
             },
             {
                 name: "Algiz",
                 symbol: "ᛉ",
+                keyword: { upright: "守護・直感", reversed: "無防備・注意" },
                 meaning: {
-                    upright: "導きと保護、直感が研ぎ澄まされている",
-                    reversed: "無防備になっている、注意が必要"
+                    upright: "導きと保護があります。直感が研ぎ澄まされているこの時期を、大切にしてください。",
+                    reversed: "無防備になっているサイン。注意深く、自分を守ることを意識してください。"
                 }
             },
             {
                 name: "Sowilo",
                 symbol: "ᛊ",
+                keyword: { upright: "成功・光" },
                 meaning: {
-                    upright: "目標達成が近い、明るい見通しと成功"
+                    upright: "目標達成が近づいています。明るい見通しとともに、成功があなたに向かって来ています。"
                 }
             },
             {
                 name: "Tiwaz",
                 symbol: "ᛏ",
+                keyword: { upright: "正義・決断", reversed: "限界・撤退" },
                 meaning: {
-                    upright: "正義のための決断、リーダーとしての資質を発揮する",
-                    reversed: "無理な闘い、自分の限界を知る必要"
+                    upright: "正義のための決断の時。リーダーとしての資質を発揮する場面が来ています。",
+                    reversed: "無理な闘いを続けているかもしれません。自分の限界を知ることも、知恵のひとつです。"
                 }
             },
             {
                 name: "Berkano",
                 symbol: "ᛒ",
+                keyword: { upright: "誕生・癒し", reversed: "停滞・向き合い" },
                 meaning: {
-                    upright: "新しい生命の誕生、成長と癒しの時期",
-                    reversed: "成長が停滞、内面への向き合いが必要"
+                    upright: "新しい生命の誕生のような、成長と癒しの時期です。優しく育てていきましょう。",
+                    reversed: "成長が一時的に停滞しているサイン。内面への向き合いが必要な時かもしれません。"
                 }
             },
             {
                 name: "Ehwaz",
                 symbol: "ᛖ",
+                keyword: { upright: "協調・信頼", reversed: "衝突・危機" },
                 meaning: {
-                    upright: "信頼できるパートナーとの調和、スムーズな協力関係",
-                    reversed: "相手との衝突、信頼関係の危機"
+                    upright: "信頼できるパートナーとの調和の時。スムーズな協力関係が育まれています。",
+                    reversed: "相手との衝突や、信頼関係の揺らぎがあるかもしれません。丁寧なコミュニケーションを。"
                 }
             },
             {
                 name: "Mannaz",
                 symbol: "ᛗ",
+                keyword: { upright: "自己理解・支援", reversed: "孤立・人間関係" },
                 meaning: {
-                    upright: "自分自身を知ること、周囲からの支援を受ける時期",
-                    reversed: "孤立や自分勝手さ、人間関係の問題"
+                    upright: "自分自身を深く知ること。周囲からの支援を受け取ることができる時期です。",
+                    reversed: "孤立や自分勝手さ、人間関係の問題に向き合う必要があるかもしれません。"
                 }
             },
             {
                 name: "Laguz",
                 symbol: "ᛚ",
+                keyword: { upright: "直感・流れ", reversed: "感情の乱れ" },
                 meaning: {
-                    upright: "直感と感情の流れに身を任せる、無意識の力を信じる",
-                    reversed: "感情が支配的、バランスを失っている"
+                    upright: "直感と感情の流れに身を任せる時。無意識の力を信じて、流れとともに動いてください。",
+                    reversed: "感情が揺れ、バランスを失っているかもしれません。立ち止まって深呼吸を。"
                 }
             },
             {
                 name: "Ingwaz",
                 symbol: "ᛜ",
+                keyword: { upright: "完成・準備" },
                 meaning: {
-                    upright: "事柄の完成が近い、新しいステージへの準備完了"
+                    upright: "事柄の完成が近づいています。新しいステージへの準備が、静かに整ってきています。"
                 }
             },
             {
                 name: "Othila",
                 symbol: "ᛟ",
+                keyword: { upright: "基盤・伝統", reversed: "葛藤・迷い" },
                 meaning: {
-                    upright: "家庭と基盤の安定、伝統と遺産を大切にする",
-                    reversed: "家族との葛藤、自分らしさを見失う"
+                    upright: "家庭と基盤の安定の時。伝統と遺産を大切にすることで、根が深まっていきます。",
+                    reversed: "家族との葛藤、または自分らしさを見失っているかもしれません。"
                 }
             },
             {
                 name: "Dagaz",
                 symbol: "ᛞ",
+                keyword: { upright: "夜明け・変化" },
                 meaning: {
-                    upright: "新しい朝が訪れる、光による目覚めと変化"
+                    upright: "新しい朝が訪れています。光による目覚めと変化があなたを包んでいます。"
                 }
             },
             {
                 name: "Blank",
                 symbol: "◯",
+                keyword: { upright: "神秘・可能性" },
                 meaning: {
-                    upright: "未知なる可能性、運命の導き、神秘なる力、問われた答えは今だ明かされず"
+                    upright: "未知なる可能性と、運命の神秘的な導き。今はまだ答えは明かされず、静けさの中に在ってください。"
                 }
             }
         ];
 
-        let currentRune = null;
-        let isReversed = false;
+        // 逆位置なしのルーン
+        const noReversed = ["Gebo", "Hagalaz", "Isa", "Jera", "Eihwaz", "Sowilo", "Ingwaz", "Dagaz", "Blank"];
 
-        // 逆位置がないルーン（ファイナル版基準）
-        const noReversedRunes = ["Gebo", "Hagalaz", "Isa", "Jera", "Eihwaz", "Sowilo", "Ingwaz", "Dagaz", "Blank"];
+        let drawn = false;
 
         function drawRune() {
-            // ランダムにルーンを選択
-            const randomIndex = Math.floor(Math.random() * runes.length);
-            currentRune = runes[randomIndex];
+            if (drawn) return;
 
-            // 逆位置がないルーンかチェック
-            if (noReversedRunes.includes(currentRune.name)) {
-                isReversed = false;
-            } else {
-                // ランダムに正位置か逆位置かを決定
-                isReversed = Math.random() < 0.5;
-            }
+            const idx = Math.floor(Math.random() * runes.length);
+            const rune = runes[idx];
+            const isReversed = !noReversed.includes(rune.name) && Math.random() < 0.5;
 
-            // 表示を更新
-            const display = document.getElementById('runeDisplay');
-            const runeImage = document.getElementById('runeImage');
-            const runeName = document.getElementById('runeName');
-            const runePositionLabel = document.getElementById('runePositionLabel');
-            const runeMeaning = document.getElementById('runeMeaning');
+            // カード裏面を更新
+            const cardRune = document.getElementById('cardRune');
+            cardRune.textContent = rune.symbol;
+            cardRune.classList.toggle('is-reversed', isReversed);
 
-            runeImage.textContent = currentRune.symbol;
-            runeName.textContent = currentRune.name;
+            document.getElementById('cardName').textContent = rune.name;
+            document.getElementById('cardPosition').textContent = isReversed ? '逆位置' : '正位置';
 
-            if (isReversed) {
-                runeImage.classList.add('flipped');
-                runePositionLabel.textContent = '逆位置';
-                runeMeaning.textContent = currentRune.meaning.reversed;
-            } else {
-                runeImage.classList.remove('flipped');
-                runePositionLabel.textContent = '正位置';
-                runeMeaning.textContent = currentRune.meaning.upright;
-            }
+            const kw = isReversed ? (rune.keyword.reversed || rune.keyword.upright) : rune.keyword.upright;
+            document.getElementById('cardKeyword').textContent = kw;
 
-            // イントロを非表示、相談ブロックを表示
-            document.getElementById('intro').classList.add('hidden');
-            display.classList.remove('hidden');
-            document.getElementById('consultBlock').classList.remove('hidden');
+            const msg = isReversed ? (rune.meaning.reversed || rune.meaning.upright) : rune.meaning.upright;
+            document.getElementById('messageText').textContent = msg;
+
+            // カードをフリップ
+            const card = document.getElementById('card');
+            const cardScene = document.getElementById('cardScene');
+            card.classList.add('is-flipped');
+            cardScene.classList.add('card-scene--drawn');
+
+            // メッセージエリアを表示
+            const messageArea = document.getElementById('messageArea');
+            messageArea.style.display = 'block';
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    messageArea.classList.add('is-visible');
+                });
+            });
+
+            // ボタン切替
+            document.getElementById('btnDraw').style.display = 'none';
+            document.getElementById('btnReset').style.display = 'block';
+            document.getElementById('drawInstruction').style.display = 'none';
+
+            drawn = true;
+        }
+
+        function onCardTap() {
+            if (!drawn) drawRune();
         }
 
         function resetRune() {
-            currentRune = null;
-            isReversed = false;
-            document.getElementById('runeDisplay').classList.add('hidden');
-            document.getElementById('consultBlock').classList.add('hidden');
-            document.getElementById('intro').classList.remove('hidden');
-        }
+            drawn = false;
 
-        // Service Worker登録（PWA対応）
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(registration => {
-                    console.log('Service Worker登録成功:', registration);
-                })
-                .catch(error => {
-                    console.log('Service Worker登録失敗:', error);
-                });
+            const card = document.getElementById('card');
+            const cardScene = document.getElementById('cardScene');
+            card.classList.remove('is-flipped');
+            cardScene.classList.remove('card-scene--drawn');
+
+            const messageArea = document.getElementById('messageArea');
+            messageArea.classList.remove('is-visible');
+            setTimeout(() => { messageArea.style.display = 'none'; }, 500);
+
+            document.getElementById('btnDraw').style.display = 'block';
+            document.getElementById('btnReset').style.display = 'none';
+            document.getElementById('drawInstruction').style.display = 'block';
         }
     </script>
+
 </body>
 </html>
