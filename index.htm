@@ -963,7 +963,6 @@
 
             // ボタン切替
             document.getElementById('btnDraw').style.display = 'none';
-            document.getElementById('btnDetail').style.display = 'block';
             document.getElementById('btnReset').style.display = 'block';
             document.getElementById('drawInstruction').style.display = 'none';
 
@@ -975,9 +974,7 @@
         function toggleDetail() {
             detailOpen = !detailOpen;
             const area = document.getElementById('detailArea');
-            const btn = document.getElementById('btnDetail');
             area.classList.toggle('is-open', detailOpen);
-            btn.textContent = detailOpen ? '閉じる　▴' : '詳しく見る　▾';
         }
 
         function onCardTap() {
@@ -1001,8 +998,6 @@
             detailArea.classList.remove('is-open');
 
             document.getElementById('btnDraw').style.display = 'block';
-            document.getElementById('btnDetail').style.display = 'none';
-            document.getElementById('btnDetail').textContent = '詳しく見る　▾';
             document.getElementById('btnReset').style.display = 'none';
             document.getElementById('drawInstruction').style.display = 'block';
         }
