@@ -370,6 +370,77 @@
             color: var(--text-main);
         }
 
+        .btn-detail {
+            width: 100%;
+            padding: 12px;
+            background-color: transparent;
+            color: var(--green-deep);
+            border: 1px solid rgba(74, 103, 65, 0.35);
+            border-radius: 8px;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            -webkit-tap-highlight-color: transparent;
+            display: none;
+        }
+
+        .btn-detail:hover {
+            background-color: var(--green-light);
+        }
+
+        /* ========== DETAIL AREA ========== */
+        .detail-area {
+            background-color: var(--green-light);
+            border-radius: 12px;
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
+            margin-bottom: 0;
+        }
+
+        .detail-area.is-open {
+            max-height: 500px;
+            padding: 24px;
+            opacity: 1;
+            margin-bottom: 16px;
+        }
+
+        .detail-label {
+            font-size: 9px;
+            letter-spacing: 0.25em;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        .detail-reading {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green-deep);
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-divider {
+            width: 24px;
+            height: 1px;
+            background-color: var(--green-deep);
+            opacity: 0.2;
+            margin-bottom: 12px;
+        }
+
+        .detail-origin {
+            font-size: 13px;
+            line-height: 1.9;
+            color: var(--text-main);
+            letter-spacing: 0.03em;
+        }
+
         /* ========== SECTION SEPARATOR ========== */
         .section-separator {
             max-width: 480px;
@@ -585,9 +656,18 @@
             <p class="message-text" id="messageText">—</p>
         </div>
 
+        <!-- DETAIL AREA -->
+        <div class="detail-area" id="detailArea">
+            <p class="detail-label">Origin</p>
+            <p class="detail-reading" id="detailReading">—</p>
+            <div class="detail-divider"></div>
+            <p class="detail-origin" id="detailOrigin">—</p>
+        </div>
+
         <!-- ACTION BUTTONS -->
         <div class="action-area">
             <button class="btn-draw" id="btnDraw" onclick="drawRune()">ルーンを引く</button>
+
             <button class="btn-reset" id="btnReset" onclick="resetRune()" style="display:none;">もう一度引き直す</button>
         </div>
     </section>
@@ -616,220 +696,154 @@
         // ===== ルーンデータ（25枚） =====
         const runes = [
             {
-                name: "Fehu",
-                symbol: "ᚠ",
+                name: "Fehu", reading: "フェオ", symbol: "ᚠ",
+                origin: "家畜の牛。古代社会では牛が最も重要な財産であり、富と豊かさの象徴として考えられていた。",
                 keyword: { upright: "豊かさ・繁栄", reversed: "強欲・浪費" },
-                meaning: {
-                    upright: "段階的な努力により豊かな成果を得る時。物質的な豊かさと繁栄が、あなたの前に開かれています。",
-                    reversed: "強欲さや無駄づかいに気をつけて。経済的な課題が試練として訪れているかもしれません。"
-                }
+                meaning: { upright: "段階的な努力により豊かな成果を得る時。物質的な豊かさと繁栄が、あなたの前に開かれています。", reversed: "強欲さや無駄づかいに気をつけて。経済的な課題が試練として訪れているかもしれません。" }
             },
             {
-                name: "Uruz",
-                symbol: "ᚢ",
+                name: "Uruz", reading: "ウル", symbol: "ᚢ",
+                origin: "野生の野牛（現在は絶滅）。古代ゲルマン民族にとって最も危険で力強い動物で、制御できない原始的な力の象徴。",
                 keyword: { upright: "生命力・勇気", reversed: "疲弊・枯渇" },
-                meaning: {
-                    upright: "本来の力強さと生命力が満ちています。困難を打ち抜く勇気が、今のあなたの中にあります。",
-                    reversed: "エネルギーが枯渇しているサイン。心身の疲弊に、静かに向き合う時かもしれません。"
-                }
+                meaning: { upright: "本来の力強さと生命力が満ちています。困難を打ち抜く勇気が、今のあなたの中にあります。", reversed: "エネルギーが枯渇しているサイン。心身の疲弊に、静かに向き合う時かもしれません。" }
             },
             {
-                name: "Thurisaz",
-                symbol: "ᚦ",
+                name: "Thurisaz", reading: "ソーン", symbol: "ᚦ",
+                origin: "巨人またはトゲ。北欧神話の巨人族の力と、防御や保護の象徴。危険と同時に守りをもたらす力。",
                 keyword: { upright: "試練と成長", reversed: "争い・警戒" },
-                meaning: {
-                    upright: "試練を通じた成長と変化の時。あなたは今、守られながら変容の道を歩んでいます。",
-                    reversed: "争いや悪い影響が近くにあるかもしれません。警戒心を持って進む時です。"
-                }
+                meaning: { upright: "試練を通じた成長と変化の時。あなたは今、守られながら変容の道を歩んでいます。", reversed: "争いや悪い影響が近くにあるかもしれません。警戒心を持って進む時です。" }
             },
             {
-                name: "Ansuz",
-                symbol: "ᚨ",
+                name: "Ansuz", reading: "アンスール", symbol: "ᚨ",
+                origin: "神またはエスイル。北欧神話の高位の神々を意味し、神聖な叡智と言葉の力の象徴。",
                 keyword: { upright: "叡智・言葉", reversed: "誤解・混乱" },
-                meaning: {
-                    upright: "知識と叡智による導きがあります。言葉の力を信じ、内なる声に耳を傾けてください。",
-                    reversed: "誤解や情報の混乱が生じやすい時。言葉を慎重に扱うことが大切です。"
-                }
+                meaning: { upright: "知識と叡智による導きがあります。言葉の力を信じ、内なる声に耳を傾けてください。", reversed: "誤解や情報の混乱が生じやすい時。言葉を慎重に扱うことが大切です。" }
             },
             {
-                name: "Raidho",
-                symbol: "ᚱ",
+                name: "Raidho", reading: "ラド", symbol: "ᚱ",
+                origin: "旅または車輪。馬による旅と、人生の移動・進化を象徴。循環する時間と前への動きを表す。",
                 keyword: { upright: "前進・旅", reversed: "停滞・迷い" },
-                meaning: {
-                    upright: "人生の新しいステージへと移動する時。スムーズな前進があなたを待っています。",
-                    reversed: "停滞や遅延を感じているなら、方向転換の必要があるかもしれません。"
-                }
+                meaning: { upright: "人生の新しいステージへと移動する時。スムーズな前進があなたを待っています。", reversed: "停滞や遅延を感じているなら、方向転換の必要があるかもしれません。" }
             },
             {
-                name: "Kenaz",
-                symbol: "ᚲ",
+                name: "Kenaz", reading: "ケン", symbol: "ᚲ",
+                origin: "松明または火。暗闇を照らす光であり、知識、視力、創造的なひらめきを象徴。",
                 keyword: { upright: "創造・情熱", reversed: "停滞・無気力" },
-                meaning: {
-                    upright: "内からの光が灯っています。創造的な情熱が目覚め、あなたを前へと導きます。",
-                    reversed: "やる気の喪失を感じているかもしれません。物事が進まない停滞感と向き合う時です。"
-                }
+                meaning: { upright: "内からの光が灯っています。創造的な情熱が目覚め、あなたを前へと導きます。", reversed: "やる気の喪失を感じているかもしれません。物事が進まない停滞感と向き合う時です。" }
             },
             {
-                name: "Gebo",
-                symbol: "ᚷ",
+                name: "Gebo", reading: "ギュフ", symbol: "ᚷ",
+                origin: "贈り物または交換。与えることと受け取ることの均衡、人間関係と絆を象徴。",
                 keyword: { upright: "調和・絆" },
-                meaning: {
-                    upright: "与えることと受け取ることのバランスの中に調和があります。絆が深まっていく時です。"
-                }
+                meaning: { upright: "与えることと受け取ることのバランスの中に調和があります。絆が深まっていく時です。" }
             },
             {
-                name: "Wunjo",
-                symbol: "ᚹ",
+                name: "Wunjo", reading: "ウィン", symbol: "ᚹ",
+                origin: "喜びまたは幸福。完成と達成感、人生の調和した状態を象徴。",
                 keyword: { upright: "喜び・達成", reversed: "失望・期待とのズレ" },
-                meaning: {
-                    upright: "喜びと達成感が訪れます。願いが形になる時期がやってきています。",
-                    reversed: "失望や悔しさを感じているかもしれません。期待と現実のズレを静かに見つめる時です。"
-                }
+                meaning: { upright: "喜びと達成感が訪れます。願いが形になる時期がやってきています。", reversed: "失望や悔しさを感じているかもしれません。期待と現実のズレを静かに見つめる時です。" }
             },
             {
-                name: "Hagalaz",
-                symbol: "ᚺ",
+                name: "Hagalaz", reading: "ハガル", symbol: "ᚺ",
+                origin: "ひょうまたは雹。予測不可能な自然災害であり、破壊と同時に新しい始まりをもたらす変化の象徴。",
                 keyword: { upright: "変革・再生" },
-                meaning: {
-                    upright: "避けられない変革の時。古いものが壊れ、その先に新しい始まりが芽吹いてきます。"
-                }
+                meaning: { upright: "避けられない変革の時。古いものが壊れ、その先に新しい始まりが芽吹いてきます。" }
             },
             {
-                name: "Nauthiz",
-                symbol: "ᚾ",
+                name: "Nauthiz", reading: "ニード", symbol: "ᚾ",
+                origin: "必要性または制約。困難な状況を乗り越えるために必要な強さと工夫を象徴。",
                 keyword: { upright: "忍耐・鍛錬", reversed: "疲弊・無理" },
-                meaning: {
-                    upright: "困難を通じた自己鍛錬の時です。必要とされる我慢と工夫が、あなたを強くします。",
-                    reversed: "やり過ぎによる疲弊のサイン。無理を続けていないか、自分に問いかけてみてください。"
-                }
+                meaning: { upright: "困難を通じた自己鍛錬の時です。必要とされる我慢と工夫が、あなたを強くします。", reversed: "やり過ぎによる疲弊のサイン。無理を続けていないか、自分に問いかけてみてください。" }
             },
             {
-                name: "Isa",
-                symbol: "ᛁ",
+                name: "Isa", reading: "イス", symbol: "ᛁ",
+                origin: "氷。動きを止める冷たさと、静寂の中での内面的な深まりを象徴。",
                 keyword: { upright: "静止・内省" },
-                meaning: {
-                    upright: "今は待つべき時。静かに内面を見つめ、動かずにいることが最善の選択です。"
-                }
+                meaning: { upright: "今は待つべき時。静かに内面を見つめ、動かずにいることが最善の選択です。" }
             },
             {
-                name: "Jera",
-                symbol: "ᛃ",
+                name: "Jera", reading: "ヤラ", symbol: "ᛃ",
+                origin: "一年または季節。時間の循環と自然のサイクルを象徴。すべてのものに時期がある。",
                 keyword: { upright: "収穫・循環" },
-                meaning: {
-                    upright: "季節の循環と自然な流れの中にいます。蒔いた種が実を結ぶ時が近づいています。"
-                }
+                meaning: { upright: "季節の循環と自然な流れの中にいます。蒔いた種が実を結ぶ時が近づいています。" }
             },
             {
-                name: "Eihwaz",
-                symbol: "ᛇ",
+                name: "Eihwaz", reading: "ユル", symbol: "ᛇ",
+                origin: "ヒバの木。堅い木であり、変容の中での安定と防御の力を象徴。",
                 keyword: { upright: "変容・安定" },
-                meaning: {
-                    upright: "大きな変容の中でも、あなたは揺るぎなく立っています。信念を持って進んでください。"
-                }
+                meaning: { upright: "大きな変容の中でも、あなたは揺るぎなく立っています。信念を持って進んでください。" }
             },
             {
-                name: "Perthro",
-                symbol: "ᛈ",
+                name: "Perthro", reading: "ペオース", symbol: "ᛈ",
+                origin: "賽子またはサイコロ。秘密で隠された運命、予測不可能な偶然を象徴。",
                 keyword: { upright: "可能性・運命", reversed: "秘密・混乱" },
-                meaning: {
-                    upright: "隠されていた可能性が開かれていきます。運命の導きに、静かに身を委ねてみてください。",
-                    reversed: "秘密が明らかになり、予期しない展開が訪れるかもしれません。"
-                }
+                meaning: { upright: "隠されていた可能性が開かれていきます。運命の導きに、静かに身を委ねてみてください。", reversed: "秘密が明らかになり、予期しない展開が訪れるかもしれません。" }
             },
             {
-                name: "Algiz",
-                symbol: "ᛉ",
+                name: "Algiz", reading: "エオロー", symbol: "ᛉ",
+                origin: "ムース。強い動物であり、保護と防御、直感的な警戒心を象徴。",
                 keyword: { upright: "守護・直感", reversed: "無防備・注意" },
-                meaning: {
-                    upright: "導きと保護があります。直感が研ぎ澄まされているこの時期を、大切にしてください。",
-                    reversed: "無防備になっているサイン。注意深く、自分を守ることを意識してください。"
-                }
+                meaning: { upright: "導きと保護があります。直感が研ぎ澄まされているこの時期を、大切にしてください。", reversed: "無防備になっているサイン。注意深く、自分を守ることを意識してください。" }
             },
             {
-                name: "Sowilo",
-                symbol: "ᛊ",
+                name: "Sowilo", reading: "シゲル", symbol: "ᛊ",
+                origin: "太陽。すべての光と暖かさの源であり、成功と明るい見通しを象徴。",
                 keyword: { upright: "成功・光" },
-                meaning: {
-                    upright: "目標達成が近づいています。明るい見通しとともに、成功があなたに向かって来ています。"
-                }
+                meaning: { upright: "目標達成が近づいています。明るい見通しとともに、成功があなたに向かって来ています。" }
             },
             {
-                name: "Tiwaz",
-                symbol: "ᛏ",
+                name: "Tiwaz", reading: "ティール", symbol: "ᛏ",
+                origin: "神ティール。北欧神話の正義と勇敢さの神であり、戦いと正義の象徴。",
                 keyword: { upright: "正義・決断", reversed: "限界・撤退" },
-                meaning: {
-                    upright: "正義のための決断の時。リーダーとしての資質を発揮する場面が来ています。",
-                    reversed: "無理な闘いを続けているかもしれません。自分の限界を知ることも、知恵のひとつです。"
-                }
+                meaning: { upright: "正義のための決断の時。リーダーとしての資質を発揮する場面が来ています。", reversed: "無理な闘いを続けているかもしれません。自分の限界を知ることも、知恵のひとつです。" }
             },
             {
-                name: "Berkano",
-                symbol: "ᛒ",
+                name: "Berkano", reading: "ベオーク", symbol: "ᛒ",
+                origin: "樺の木。新しい成長と優しい再生、母性と新しい生命の象徴。",
                 keyword: { upright: "誕生・癒し", reversed: "停滞・向き合い" },
-                meaning: {
-                    upright: "新しい生命の誕生のような、成長と癒しの時期です。優しく育てていきましょう。",
-                    reversed: "成長が一時的に停滞しているサイン。内面への向き合いが必要な時かもしれません。"
-                }
+                meaning: { upright: "新しい生命の誕生のような、成長と癒しの時期です。優しく育てていきましょう。", reversed: "成長が一時的に停滞しているサイン。内面への向き合いが必要な時かもしれません。" }
             },
             {
-                name: "Ehwaz",
-                symbol: "ᛖ",
+                name: "Ehwaz", reading: "エオー", symbol: "ᛖ",
+                origin: "馬。速度と動き、信頼できるパートナーとの協力を象徴。",
                 keyword: { upright: "協調・信頼", reversed: "衝突・危機" },
-                meaning: {
-                    upright: "信頼できるパートナーとの調和の時。スムーズな協力関係が育まれています。",
-                    reversed: "相手との衝突や、信頼関係の揺らぎがあるかもしれません。丁寧なコミュニケーションを。"
-                }
+                meaning: { upright: "信頼できるパートナーとの調和の時。スムーズな協力関係が育まれています。", reversed: "相手との衝突や、信頼関係の揺らぎがあるかもしれません。丁寧なコミュニケーションを。" }
             },
             {
-                name: "Mannaz",
-                symbol: "ᛗ",
+                name: "Mannaz", reading: "マン", symbol: "ᛗ",
+                origin: "人間。自己認識と人間関係、社会における自分の位置を象徴。",
                 keyword: { upright: "自己理解・支援", reversed: "孤立・人間関係" },
-                meaning: {
-                    upright: "自分自身を深く知ること。周囲からの支援を受け取ることができる時期です。",
-                    reversed: "孤立や自分勝手さ、人間関係の問題に向き合う必要があるかもしれません。"
-                }
+                meaning: { upright: "自分自身を深く知ること。周囲からの支援を受け取ることができる時期です。", reversed: "孤立や自分勝手さ、人間関係の問題に向き合う必要があるかもしれません。" }
             },
             {
-                name: "Laguz",
-                symbol: "ᛚ",
+                name: "Laguz", reading: "ラグ", symbol: "ᛚ",
+                origin: "湖または海の水。流動性と深い直感、無意識の力を象徴。",
                 keyword: { upright: "直感・流れ", reversed: "感情の乱れ" },
-                meaning: {
-                    upright: "直感と感情の流れに身を任せる時。無意識の力を信じて、流れとともに動いてください。",
-                    reversed: "感情が揺れ、バランスを失っているかもしれません。立ち止まって深呼吸を。"
-                }
+                meaning: { upright: "直感と感情の流れに身を任せる時。無意識の力を信じて、流れとともに動いてください。", reversed: "感情が揺れ、バランスを失っているかもしれません。立ち止まって深呼吸を。" }
             },
             {
-                name: "Ingwaz",
-                symbol: "ᛜ",
+                name: "Ingwaz", reading: "イング", symbol: "ᛜ",
+                origin: "種または神イング。内に秘められた可能性の完成と達成を象徴。",
                 keyword: { upright: "完成・準備" },
-                meaning: {
-                    upright: "事柄の完成が近づいています。新しいステージへの準備が、静かに整ってきています。"
-                }
+                meaning: { upright: "事柄の完成が近づいています。新しいステージへの準備が、静かに整ってきています。" }
             },
             {
-                name: "Othila",
-                symbol: "ᛟ",
+                name: "Othila", reading: "オセル", symbol: "ᛟ",
+                origin: "相続地または家。祖先からの遺産、家族の絆と伝統を象徴。",
                 keyword: { upright: "基盤・伝統", reversed: "葛藤・迷い" },
-                meaning: {
-                    upright: "家庭と基盤の安定の時。伝統と遺産を大切にすることで、根が深まっていきます。",
-                    reversed: "家族との葛藤、または自分らしさを見失っているかもしれません。"
-                }
+                meaning: { upright: "家庭と基盤の安定の時。伝統と遺産を大切にすることで、根が深まっていきます。", reversed: "家族との葛藤、または自分らしさを見失っているかもしれません。" }
             },
             {
-                name: "Dagaz",
-                symbol: "ᛞ",
+                name: "Dagaz", reading: "ダエグ", symbol: "ᛞ",
+                origin: "昼または夜明け。新しい時代の到来と目覚めの光を象徴。",
                 keyword: { upright: "夜明け・変化" },
-                meaning: {
-                    upright: "新しい朝が訪れています。光による目覚めと変化があなたを包んでいます。"
-                }
+                meaning: { upright: "新しい朝が訪れています。光による目覚めと変化があなたを包んでいます。" }
             },
             {
-                name: "Blank",
-                symbol: "◯",
+                name: "Blank", reading: "ブランク", symbol: "◯",
+                origin: "無限の可能性。古き時代と新しき時代の狭間に存在するルーン。すべての始まりであり、すべての終わりであり、その先の無限を象徴する。",
                 keyword: { upright: "神秘・可能性" },
-                meaning: {
-                    upright: "未知なる可能性と、運命の神秘的な導き。今はまだ答えは明かされず、静けさの中に在ってください。"
-                }
+                meaning: { upright: "未知なる可能性と、運命の神秘的な導き。今はまだ答えは明かされず、静けさの中に在ってください。" }
             }
         ];
 
@@ -874,12 +888,27 @@
                 });
             });
 
+            // 詳細エリアを更新
+            document.getElementById('detailReading').textContent = rune.name + "（" + rune.reading + "）";
+            document.getElementById('detailOrigin').textContent = rune.origin;
+
             // ボタン切替
             document.getElementById('btnDraw').style.display = 'none';
+            document.getElementById('btnDetail').style.display = 'block';
             document.getElementById('btnReset').style.display = 'block';
             document.getElementById('drawInstruction').style.display = 'none';
 
             drawn = true;
+        }
+
+        let detailOpen = false;
+
+        function toggleDetail() {
+            detailOpen = !detailOpen;
+            const area = document.getElementById('detailArea');
+            const btn = document.getElementById('btnDetail');
+            area.classList.toggle('is-open', detailOpen);
+            btn.textContent = detailOpen ? '閉じる　▴' : '詳しく見る　▾';
         }
 
         function onCardTap() {
@@ -888,6 +917,7 @@
 
         function resetRune() {
             drawn = false;
+            detailOpen = false;
 
             const card = document.getElementById('card');
             const cardScene = document.getElementById('cardScene');
@@ -898,7 +928,12 @@
             messageArea.classList.remove('is-visible');
             setTimeout(() => { messageArea.style.display = 'none'; }, 500);
 
+            const detailArea = document.getElementById('detailArea');
+            detailArea.classList.remove('is-open');
+
             document.getElementById('btnDraw').style.display = 'block';
+            document.getElementById('btnDetail').style.display = 'none';
+            document.getElementById('btnDetail').textContent = '詳しく見る　▾';
             document.getElementById('btnReset').style.display = 'none';
             document.getElementById('drawInstruction').style.display = 'block';
         }
