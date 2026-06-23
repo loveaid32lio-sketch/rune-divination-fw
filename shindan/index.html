@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>あなたに宿るルーン瞑想診断 | Forest Works</title>
+    <meta name="description" content="森の旅の7つの場面に答えると、あなたに宿るルーンと、あなたに合う瞑想法がわかります。7問・約1分。">
+    <meta name="theme-color" content="#2c362a">
+    <meta property="og:title" content="あなたに宿るルーン瞑想診断">
+    <meta property="og:description" content="森の旅の7つの場面に答えると、あなたに宿るルーンと、あなたに合う瞑想法がわかります。7問・約1分。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rune.wsmaruma.com/shindan/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --green-deep: #4a6741;
+            --green-light: #e8ede7;
+            --green-mid: #6a8b60;
+            --beige: #f9f8f6;
+            --dark: #2c362a;
+            --accent: #c28f79;
+            --text-main: #3a4438;
+            --text-sub: #7a8c76;
+            --line: #dfe5dc;
+            --serif: 'Shippori Mincho', serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+            background-color: var(--beige);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ========== HEADER ========== */
+        .site-header {
+            background-color: var(--dark);
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .site-logo {
+            font-family: var(--serif);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--green-light);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .site-sub {
+            font-size: 10px;
+            color: var(--text-sub);
+            letter-spacing: 0.15em;
+        }
+
+        /* ========== SCREENS ========== */
+        .screen {
+            display: none;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 48px 28px 64px;
+            animation: screenIn 0.6s ease both;
+        }
+        .screen--active { display: block; }
+
+        @keyframes screenIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .eyebrow {
+            font-family: var(--serif);
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        /* ========== INTRO ========== */
+        .intro-wrap { position: relative; }
+
+        .floating-runes {
+            position: absolute;
+            inset: -20px 0 0 0;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 0;
+        }
+        .floating-runes span {
+            position: absolute;
+            font-family: var(--serif);
+            color: var(--green-deep);
+            opacity: 0;
+            animation: runeFloat 9s ease-in-out infinite;
+        }
+        @keyframes runeFloat {
+            0%   { opacity: 0; transform: translateY(16px); }
+            25%  { opacity: 0.10; }
+            60%  { opacity: 0.07; }
+            100% { opacity: 0; transform: translateY(-44px); }
+        }
+
+        .intro-content { position: relative; z-index: 1; }
+
+        .intro-title {
+            font-family: var(--serif);
+            font-size: 27px;
+            font-weight: 600;
+            color: var(--dark);
+            line-height: 1.5;
+            margin-bottom: 24px;
+            letter-spacing: 0.04em;
+        }
+        .intro-divider {
+            width: 32px;
+            height: 1px;
+            background-color: var(--accent);
+            margin-bottom: 24px;
+        }
+        .intro-story {
+            font-family: var(--serif);
+            font-size: 14.5px;
+            line-height: 2.2;
+            color: var(--text-main);
+            letter-spacing: 0.04em;
+            margin-bottom: 28px;
+        }
+        .intro-story p { margin-bottom: 1em; }
+
+        .intro-meta {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 36px;
+        }
+        .intro-meta span {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--text-sub);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 6px 14px;
+            background: #fff;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 17px;
+            background-color: var(--green-deep);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            font-family: var(--serif);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+            box-shadow: 0 4px 14px rgba(44, 54, 42, 0.18);
+        }
+        .btn-primary:hover {
+            background-color: #3d5636;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(44, 54, 42, 0.22);
+        }
+        .btn-primary:active { transform: translateY(0); }
+
+        /* ========== QUESTION ========== */
+        .progress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 12px;
+        }
+        .progress-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            border: 1.5px solid var(--green-mid);
+            background: transparent;
+            transition: all 0.4s ease;
+            flex-shrink: 0;
+        }
+        .progress-dot.done {
+            background: var(--green-mid);
+            border-color: var(--green-mid);
+        }
+        .progress-dot.now {
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(194, 143, 121, 0.18);
+            animation: nowPulse 2.2s ease infinite;
+        }
+        @keyframes nowPulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(194, 143, 121, 0.14); }
+            50%      { box-shadow: 0 0 0 6px rgba(194, 143, 121, 0.05); }
+        }
+        .progress-path {
+            width: 22px;
+            height: 1px;
+            background: var(--line);
+            flex-shrink: 0;
+        }
+        .progress-path.done { background: var(--green-mid); }
+
+        .scene-label {
+            font-family: var(--serif);
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: var(--text-sub);
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 34px;
+        }
+
+        .q-card { animation: screenIn 0.5s ease both; }
+
+        .q-text {
+            font-family: var(--serif);
+            font-size: 19px;
+            font-weight: 600;
+            line-height: 1.9;
+            color: var(--dark);
+            letter-spacing: 0.03em;
+            margin-bottom: 30px;
+        }
+
+        .choices { display: flex; flex-direction: column; gap: 12px; }
+
+        .choice {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            width: 100%;
+            text-align: left;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 15px 16px;
+            font-size: 14px;
+            line-height: 1.75;
+            color: var(--text-main);
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+            font-family: inherit;
+        }
+        .choice::before {
+            content: "᛫";
+            font-family: var(--serif);
+            color: var(--accent);
+            font-size: 18px;
+            line-height: 1.4;
+            flex-shrink: 0;
+        }
+        .choice:hover {
+            border-color: var(--green-mid);
+            background-color: #fcfdfb;
+            transform: translateY(-1px);
+        }
+        .choice.picked {
+            border-color: var(--green-deep);
+            background-color: var(--green-light);
+        }
+
+        /* ========== SCENE ILLUSTRATION (紙芝居) ========== */
+        .q-scene {
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 18px rgba(44, 54, 42, 0.10);
+            line-height: 0;
+        }
+        .q-scene svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .intro-scene { margin: 0 0 28px; }
+
+        /* ========== REVEAL ========== */
+        #screenReveal {
+            position: fixed;
+            inset: 0;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, #232b22 0%, #2c362a 55%, #3a4a36 100%);
+            z-index: 50;
+            display: none;
+            overflow: hidden;
+        }
+        #screenReveal.screen--active { display: block; }
+
+        .mist {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(46px);
+            opacity: 0.8;
+            transition: opacity 2.6s ease;
+        }
+        .mist-1 {
+            width: 130vw; height: 60vh;
+            left: -20vw; top: 8vh;
+            background: radial-gradient(ellipse, rgba(232, 237, 231, 0.34), transparent 70%);
+            animation: mistDrift1 13s ease-in-out infinite alternate;
+        }
+        .mist-2 {
+            width: 120vw; height: 55vh;
+            right: -30vw; bottom: 4vh;
+            background: radial-gradient(ellipse, rgba(232, 237, 231, 0.26), transparent 70%);
+            animation: mistDrift2 17s ease-in-out infinite alternate;
+        }
+        @keyframes mistDrift1 { from { transform: translateX(-4%); } to { transform: translateX(5%); } }
+        @keyframes mistDrift2 { from { transform: translateX(4%); }  to { transform: translateX(-5%); } }
+
+        #screenReveal.cleared .mist { opacity: 0.18; }
+
+        .reveal-stage {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .rv-line {
+            font-family: var(--serif);
+            color: var(--green-light);
+            letter-spacing: 0.14em;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1.4s ease, transform 1.4s ease;
+        }
+        .rv-line.show { opacity: 0.92; transform: translateY(0); }
+        .rv-line1 { font-size: 15px; margin-bottom: 14px; }
+        .rv-line2 { font-size: 15px; margin-bottom: 44px; }
+
+        .rv-rune {
+            font-family: var(--serif);
+            font-size: 104px;
+            line-height: 1;
+            color: #f3efe8;
+            opacity: 0;
+            transform: scale(1.4);
+            filter: blur(16px);
+            transition: opacity 1.8s ease, transform 1.8s ease, filter 1.8s ease;
+            text-shadow:
+                0 0 24px rgba(194, 143, 121, 0.55),
+                0 0 64px rgba(194, 143, 121, 0.30),
+                0 0 120px rgba(232, 237, 231, 0.25);
+            margin-bottom: 26px;
+        }
+        .rv-rune.show { opacity: 1; transform: scale(1); filter: blur(0); }
+
+        .rv-name {
+            font-family: var(--serif);
+            font-size: 21px;
+            font-weight: 600;
+            color: #f3efe8;
+            letter-spacing: 0.22em;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 1.3s ease, transform 1.3s ease;
+            margin-bottom: 56px;
+        }
+        .rv-name.show { opacity: 1; transform: translateY(0); }
+
+        .rv-btn {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 1s ease, transform 1s ease;
+            background: transparent;
+            border: 1px solid rgba(243, 239, 232, 0.55);
+            color: #f3efe8;
+            border-radius: 999px;
+            padding: 14px 42px;
+            font-family: var(--serif);
+            font-size: 13.5px;
+            letter-spacing: 0.22em;
+            cursor: pointer;
+        }
+        .rv-btn.show { opacity: 1; transform: translateY(0); }
+        .rv-btn:hover { background: rgba(243, 239, 232, 0.1); }
+
+        /* ========== RESULT ========== */
+        .result-hero {
+            text-align: center;
+            padding-bottom: 36px;
+        }
+        .result-rune {
+            font-family: var(--serif);
+            font-size: 64px;
+            line-height: 1;
+            color: var(--green-deep);
+            margin-bottom: 14px;
+            text-shadow: 0 0 28px rgba(194, 143, 121, 0.35);
+        }
+        .result-name {
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            letter-spacing: 0.14em;
+            margin-bottom: 6px;
+        }
+        .result-meditation {
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            color: var(--text-sub);
+            margin-bottom: 18px;
+        }
+        .result-catch {
+            font-family: var(--serif);
+            font-size: 15px;
+            line-height: 1.9;
+            color: var(--accent);
+            letter-spacing: 0.06em;
+        }
+
+        .result-story {
+            font-family: var(--serif);
+            font-size: 14px;
+            line-height: 2.2;
+            letter-spacing: 0.04em;
+            color: var(--text-main);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 24px 22px;
+            margin-bottom: 36px;
+            position: relative;
+        }
+        .result-story::before {
+            content: "᛭";
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--beige);
+            color: var(--accent);
+            padding: 0 10px;
+            font-size: 16px;
+            font-family: var(--serif);
+        }
+
+        /* 未来の風景（未来提案） */
+        .result-future {
+            font-family: var(--serif);
+            font-size: 14.5px;
+            line-height: 2.1;
+            letter-spacing: 0.05em;
+            color: var(--green-deep);
+            text-align: center;
+            margin: 0 4px 38px;
+        }
+
+        .r-section { margin-bottom: 34px; }
+        .r-label {
+            font-family: var(--serif);
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .r-heading {
+            font-family: var(--serif);
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--dark);
+            letter-spacing: 0.05em;
+            margin-bottom: 14px;
+        }
+        .r-body {
+            font-size: 13.5px;
+            line-height: 2.0;
+            letter-spacing: 0.02em;
+            color: var(--text-main);
+        }
+
+        .r-list { list-style: none; }
+        .r-list li {
+            position: relative;
+            padding-left: 18px;
+            font-size: 13.5px;
+            line-height: 2.0;
+            color: var(--text-main);
+        }
+        .r-list li::before {
+            content: "᛫";
+            position: absolute;
+            left: 2px;
+            color: var(--green-mid);
+            font-family: var(--serif);
+        }
+
+        .r-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+        .r-chips span {
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            color: var(--green-deep);
+            background: var(--green-light);
+            border-radius: 999px;
+            padding: 7px 14px;
+        }
+
+        .r-steps { list-style: none; counter-reset: step; }
+        .r-steps li {
+            counter-increment: step;
+            position: relative;
+            padding: 0 0 14px 38px;
+            font-size: 13.5px;
+            line-height: 1.9;
+            color: var(--text-main);
+        }
+        .r-steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 24px;
+            height: 24px;
+            border: 1px solid var(--green-mid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--serif);
+            font-size: 12px;
+            color: var(--green-deep);
+        }
+
+        /* CTA */
+        .cta-area {
+            border-top: 1px solid var(--line);
+            padding-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .cta-note {
+            font-family: var(--serif);
+            font-size: 13.5px;
+            line-height: 2.0;
+            text-align: center;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+        .btn-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 999px;
+            font-family: var(--serif);
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .btn-cta:hover { transform: translateY(-1px); }
+        .btn-cta--main {
+            background: var(--green-deep);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(44, 54, 42, 0.18);
+        }
+        .btn-cta--line {
+            background: #fff;
+            color: var(--green-deep);
+            border: 1px solid var(--green-mid);
+        }
+        .btn-cta--app {
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid var(--line);
+        }
+        .btn-cta[aria-disabled="true"] {
+            opacity: 0.55;
+            cursor: default;
+            pointer-events: none;
+        }
+        .soon-badge {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 999px;
+            padding: 2px 8px;
+        }
+
+        .share-area {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .share-label {
+            font-family: var(--serif);
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .share-nudge {
+            font-family: var(--serif);
+            font-size: 12.5px;
+            line-height: 2.0;
+            letter-spacing: 0.06em;
+            color: var(--text-main);
+            margin-bottom: 14px;
+        }
+        .share-btns { display: flex; gap: 10px; justify-content: center; }
+        .btn-share {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 11px 22px;
+            font-size: 12.5px;
+            letter-spacing: 0.06em;
+            color: var(--text-main);
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+        .btn-share:hover { border-color: var(--green-mid); }
+
+        .retry-area { margin-top: 36px; text-align: center; }
+        .retry-link {
+            font-family: var(--serif);
+            font-size: 12.5px;
+            letter-spacing: 0.14em;
+            color: var(--text-sub);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .retry-link:hover { color: var(--green-deep); }
+
+        /* ========== TEASER (チラ見せ) ========== */
+        .teaser { margin-bottom: 0; }
+        .teaser-text {
+            max-height: 6.2em;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(180deg, #000 30%, transparent 96%);
+            mask-image: linear-gradient(180deg, #000 30%, transparent 96%);
+        }
+        .teaser-more {
+            font-family: var(--serif);
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            color: var(--text-sub);
+            text-align: center;
+            margin: 6px 0 26px;
+        }
+
+        /* ========== LETTER (森からの手紙) ========== */
+        .letter {
+            position: relative;
+            background: linear-gradient(165deg, #2f3a2d 0%, #243023 100%);
+            border-radius: 16px;
+            padding: 40px 24px 28px;
+            text-align: center;
+            color: var(--green-light);
+            margin-bottom: 14px;
+            box-shadow: 0 10px 30px rgba(44, 54, 42, 0.25);
+            overflow: hidden;
+        }
+        .letter::before {
+            content: "ᛟ";
+            position: absolute;
+            right: -14px;
+            bottom: -36px;
+            font-family: var(--serif);
+            font-size: 170px;
+            line-height: 1;
+            color: rgba(232, 237, 231, 0.05);
+            pointer-events: none;
+        }
+        .letter-seal {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            font-family: var(--serif);
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+        }
+        .letter-eyebrow {
+            font-family: var(--serif);
+            font-size: 10px;
+            letter-spacing: 0.28em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .letter-title {
+            font-family: var(--serif);
+            font-size: 19px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            color: #f3efe8;
+            margin-bottom: 14px;
+        }
+        .letter-body {
+            font-size: 13.5px;
+            line-height: 2.0;
+            color: rgba(243, 239, 232, 0.9);
+            margin-bottom: 18px;
+        }
+        .letter-list {
+            list-style: none;
+            text-align: left;
+            margin: 0 auto 22px;
+            max-width: 300px;
+        }
+        .letter-list li {
+            position: relative;
+            padding-left: 20px;
+            font-size: 13px;
+            line-height: 2.1;
+            color: rgba(243, 239, 232, 0.88);
+        }
+        .letter-list li::before {
+            content: "᛫";
+            position: absolute;
+            left: 2px;
+            color: var(--accent);
+            font-family: var(--serif);
+        }
+        .letter-caution {
+            font-family: var(--serif);
+            font-size: 12.5px;
+            line-height: 2.1;
+            letter-spacing: 0.08em;
+            color: #d9a98c;
+            margin-bottom: 20px;
+        }
+        .letter .btn-cta--main {
+            background: var(--accent);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+        .letter .btn-cta--main:hover { background: #b57f69; }
+        .letter-note {
+            font-size: 10.5px;
+            line-height: 1.9;
+            letter-spacing: 0.04em;
+            color: rgba(243, 239, 232, 0.55);
+            margin-top: 12px;
+        }
+
+        .intro-note {
+            font-size: 11.5px;
+            line-height: 1.9;
+            letter-spacing: 0.03em;
+            color: var(--text-sub);
+            margin: -22px 0 30px;
+        }
+
+        /* ========== FOOTER ========== */
+        .site-footer {
+            text-align: center;
+            padding: 28px 24px 44px;
+            border-top: 1px solid var(--line);
+        }
+        .footer-link {
+            font-family: var(--serif);
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            color: var(--text-sub);
+            text-decoration: none;
+        }
+        .footer-link:hover { color: var(--green-deep); }
+        .footer-copy {
+            font-size: 10px;
+            color: var(--text-sub);
+            letter-spacing: 0.1em;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 360px) {
+            .intro-title { font-size: 23px; }
+            .rv-rune { font-size: 88px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <p class="site-logo">Forest Works</p>
+        <p class="site-sub">ウィメンズマルマ</p>
+    </header>
+
+    <main>
+        <!-- ===== INTRO ===== -->
+        <section id="screenIntro" class="screen screen--active">
+            <div class="intro-wrap">
+                <div class="floating-runes" aria-hidden="true">
+                    <span style="left:6%;  top:8%;  font-size:26px; animation-delay:0s;">ᚠ</span>
+                    <span style="left:82%; top:4%;  font-size:20px; animation-delay:2.2s;">ᛟ</span>
+                    <span style="left:64%; top:30%; font-size:30px; animation-delay:4.4s;">ᚱ</span>
+                    <span style="left:14%; top:46%; font-size:18px; animation-delay:6.1s;">ᛞ</span>
+                    <span style="left:88%; top:58%; font-size:24px; animation-delay:1.3s;">ᛁ</span>
+                    <span style="left:38%; top:70%; font-size:20px; animation-delay:3.6s;">ᚷ</span>
+                    <span style="left:74%; top:84%; font-size:26px; animation-delay:5.2s;">ᚨ</span>
+                </div>
+                <div class="intro-content">
+                    <p class="eyebrow">Rune Meditation</p>
+                    <h1 class="intro-title">あなたに宿る、<br>ルーン瞑想診断</h1>
+                    <div class="intro-divider"></div>
+                    <div class="q-scene intro-scene" aria-hidden="true">
+                        <svg viewBox="0 0 480 220" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="in-sky" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#edf1ea"/><stop offset="1" stop-color="#f9f8f6"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="480" height="220" fill="url(#in-sky)"/>
+                            <circle cx="372" cy="58" r="64" fill="#f3e9d8" opacity="0.45"/>
+                            <circle cx="372" cy="58" r="36" fill="#f3e9d8" opacity="0.9"/>
+                            <ellipse cx="240" cy="212" rx="320" ry="58" fill="#e3e8df"/>
+                            <polygon points="62,152 80,96 98,152" fill="#c9d6c3"/>
+                            <polygon points="118,150 132,108 146,150" fill="#c9d6c3"/>
+                            <polygon points="296,150 312,102 328,150" fill="#c9d6c3"/>
+                            <polygon points="352,152 366,112 380,152" fill="#c9d6c3"/>
+                            <polygon points="20,162 42,92 64,162" fill="#9db392"/>
+                            <polygon points="398,162 420,98 442,162" fill="#9db392"/>
+                            <polygon points="92,168 116,84 140,168" fill="#6a8b60"/>
+                            <polygon points="330,168 354,90 378,168" fill="#6a8b60"/>
+                            <polygon points="-8,196 30,60 68,196" fill="#4a6741"/>
+                            <polygon points="412,196 450,64 488,196" fill="#4a6741"/>
+                            <rect x="0" y="138" width="480" height="20" fill="#ffffff" opacity="0.32"/>
+                            <path d="M200,220 C224,196 236,184 233,164 L247,164 C244,184 258,196 284,220 Z" fill="#efe8da"/>
+                        </svg>
+                    </div>
+                    <div class="intro-story">
+                        <p>深い森の入口に、あなたは立っている。</p>
+                        <p>ここは、自分に合う「心の整え方」が見つかると言われる森。<br>といっても、森が答えをくれるわけじゃない。<br><strong>あなたの答えは、あなたがもう知っている——</strong><br>森は、それを思い出させてくれるだけ。</p>
+                        <p>7つの場面で、あなたらしい選択を。<br>むずかしく考えないで、緩くいこう——<br>旅の終わりに、あなたに宿るルーンが顕れます。</p>
+                    </div>
+                    <div class="intro-meta">
+                        <span>全7問</span>
+                        <span>約1分</span>
+                        <span>無料</span>
+                    </div>
+                    <p class="intro-note">結果はその場で。くわしい読み解きは、旅の終わりに「森からの手紙」（メール）でお届けします。</p>
+                    <button class="btn-primary" type="button" onclick="startJourney()">森へ入る</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== QUESTION ===== -->
+        <section id="screenQuestion" class="screen" aria-live="polite">
+            <div class="progress" id="progressBar"></div>
+            <p class="scene-label" id="sceneLabel">Scene 1 / 7</p>
+            <div class="q-card" id="qCard">
+                <div class="q-scene" id="qScene" aria-hidden="true"></div>
+                <p class="q-text" id="qText"></p>
+                <div class="choices" id="choices"></div>
+            </div>
+        </section>
+
+        <!-- ===== REVEAL ===== -->
+        <section id="screenReveal" class="screen">
+            <div class="mist mist-1" aria-hidden="true"></div>
+            <div class="mist mist-2" aria-hidden="true"></div>
+            <div class="reveal-stage">
+                <p class="rv-line rv-line1" id="rvLine1">霧が晴れていく——</p>
+                <p class="rv-line rv-line2" id="rvLine2">あなたに宿るルーンは……</p>
+                <div class="rv-rune" id="rvRune">ᛁ</div>
+                <p class="rv-name" id="rvName"></p>
+                <button class="rv-btn" id="rvBtn" type="button" onclick="showResult()">結果を受け取る</button>
+            </div>
+        </section>
+
+        <!-- ===== RESULT ===== -->
+        <section id="screenResult" class="screen">
+            <div class="result-hero">
+                <p class="eyebrow" style="text-align:center;">Your Rune</p>
+                <div class="result-rune" id="resRune"></div>
+                <h2 class="result-name" id="resName"></h2>
+                <p class="result-meditation" id="resMeditation"></p>
+                <p class="result-catch" id="resCatch"></p>
+            </div>
+
+            <div class="result-story" id="resStory"></div>
+
+            <div class="r-section">
+                <p class="r-label">The Pitfall</p>
+                <h3 class="r-heading">旅人の落とし穴 — ついやりがちなこと</h3>
+                <ul class="r-list" id="resPitfalls"></ul>
+            </div>
+
+            <p class="r-label" style="text-align:center;">The Path Ahead</p>
+            <p class="result-future" id="resFuture"></p>
+
+            <div class="r-section teaser">
+                <p class="r-label">About You</p>
+                <h3 class="r-heading">あなたはこんな旅人</h3>
+                <p class="r-body teaser-text" id="resAbout"></p>
+            </div>
+            <p class="teaser-more">—— この先は、手紙を受け取った旅人だけが読めます</p>
+
+            <div class="letter" id="letterArea">
+                <div class="letter-seal" id="letterSeal">ᛁ</div>
+                <p class="letter-eyebrow">A Letter from the Forest</p>
+                <h3 class="letter-title">旅は、まだ終わらない</h3>
+                <p class="letter-body">
+                    森の賢者が、あなたのルーン<span id="letterRune"></span>について綴った<strong>手紙</strong>——<br><strong>その未来への地図</strong>を預かっています。<br>届け先を、教えてください——
+                </p>
+                <ul class="letter-list">
+                    <li>旅人としてのあなたの、くわしい読み解き</li>
+                    <li id="letterWhy"></li>
+                    <li>今日からはじめる「はじめの儀式」</li>
+                    <li>あなたのルーンの3分瞑想音声（近日）</li>
+                </ul>
+                <p class="letter-caution">賢者からの言伝——<br>「変わる気のない旅人には、渡さないでほしい」</p>
+                <a class="btn-cta btn-cta--main" id="letterBtn" href="#" target="_blank" rel="noopener">手紙を受け取る（無料）</a>
+                <p class="letter-note">登録後、確認メールが届きます。手紙はいつでも受け取りを止められます。</p>
+            </div>
+
+            <a class="btn-cta btn-cta--app" href="https://rune.wsmaruma.com/" id="ctaApp" style="margin-top:14px;">
+                今日のルーンを一枚引く →
+            </a>
+
+            <div class="share-area">
+                <p class="share-label">Share</p>
+                <p class="share-nudge">同じ森を歩く誰かにも——<br>あなたのルーンを、見せてあげてください。</p>
+                <div class="share-btns">
+                    <a class="btn-share" id="shareX" href="#" target="_blank" rel="noopener">Xでシェア</a>
+                    <button class="btn-share" id="shareCopy" type="button" onclick="copyShare()">リンクをコピー</button>
+                </div>
+            </div>
+
+            <div class="retry-area">
+                <button class="retry-link" type="button" onclick="restart()">もう一度、森へ入る</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <a class="footer-link" href="https://rune.wsmaruma.com/">ルーン、一枚引き ↗</a>
+        <p class="footer-copy">© Forest Works / WSマルマ</p>
+    </footer>
+
+    <script>
+        "use strict";
+
+        /* ========== DATA ========== */
+
+        const RUNES = {
+            isa: {
+                glyph: "ᛁ",
+                name: "イサの静寂",
+                meditation: "呼吸瞑想",
+                catch: "氷のように澄んだ静けさを宿す、安定の旅人",
+                story: "霧が晴れていく——あなたに宿るルーンは、イサ ᛁ。凍てつく湖面のように、揺るがぬ静けさを内に秘めた旅人。世界がどれだけ慌ただしくても、あなたの芯は静かに澄んでいる。",
+                future: "呼吸が錨になったとき——どんなに急かされても崩れない、静かな強さがあなたのものになる。",
+                about: "物事を丁寧に、自分のペースで進めたいタイプのようです。周りが慌ただしくても流されにくい一方で、急かされると本来の力が出しにくいことも。心が整っているときのあなたは、高い集中力と継続力を発揮します。",
+                strengths: ["落ち着きがあり、慎重に判断できる", "集中力・継続力が高い", "毎日の積み重ねを大切にできる"],
+                habits: ["考えすぎて、最初の一歩が遅れることがある", "完璧を求めやすい傾向"],
+                pitfalls: ["「整ってから始めよう」と準備ばかりで、一歩目が出ない", "瞑想まで「正しくやらなきゃ」と頑張って、逆に肩に力が入る"],
+                whyHeading: "イサが導く瞑想 —— 呼吸瞑想",
+                why: "呼吸は、いつでもどこでも戻ってこられる「心の錨（いかり）」。イサの静けさを宿すあなたには、毎日同じ手順で心を整えられる呼吸瞑想が、一番なじみやすいスタイルです。",
+                recs: ["呼吸瞑想", "数息観", "3分間呼吸法"],
+                ritual: ["寝る前か朝に、3分のタイマーをセット", "鼻から4秒吸って、6秒かけてゆっくり吐く——氷が静かに溶けていくように", "意識がそれたら「それたな」と気づいて呼吸に戻る。気づけた時点で成功です"],
+                ctaNote: "イサのあなたへ、静寂の3分瞑想音声を準備しています。"
+            },
+            ansuz: {
+                glyph: "ᚨ",
+                name: "アンスズの眼",
+                meditation: "観察瞑想（マインドフルネス）",
+                catch: "世界の声を聴く、気づきの探究者",
+                story: "霧が晴れていく——あなたに宿るルーンは、アンスズ ᚨ。風のささやき、水の音、人の言葉の奥にあるもの。あなたは、世界が発する小さな声を聴き取れる旅人。",
+                future: "考えすぎる頭が、世界を深く読む才能に変わる——気づきは、あなたの武器になる。",
+                about: "観察力が高く、物事を一歩引いて見られるタイプのようです。考えごとが頭の中で続きやすい分、「今ここ」に意識を戻せたときの冷静さと洞察力は随一。あなたの「考える力」は、使い方次第で最高の武器になります。",
+                strengths: ["観察力・分析力が高い", "感情に流されず、客観的に見られる", "小さな変化や違和感によく気づく"],
+                habits: ["頭の中がざわざわしやすい（考えすぎ）", "自分の感情は後回しにしがち"],
+                pitfalls: ["寝る前に、頭の中で今日の反省会を開いてしまう", "人の話を聞きながら、もう次の分析を始めている"],
+                whyHeading: "アンスズが導く瞑想 —— 観察瞑想",
+                why: "観察瞑想は「考えを止める」のではなく「考えを眺める」練習。思考が多いあなたの特性を、そのまま強みに変えられる瞑想スタイルです。",
+                recs: ["マインドフルネス瞑想", "ボディスキャン", "音の観察瞑想"],
+                ritual: ["目を閉じて、聞こえる音を3つ探す", "良い・悪いと評価せず、ただ聴く——アンスズの耳で", "考えごとが浮かんだら「考えてるな」とラベルを貼って、また音に戻る"],
+                ctaNote: "アンスズのあなたへ、気づきの3分瞑想音声を準備しています。"
+            },
+            raido: {
+                glyph: "ᚱ",
+                name: "ライドの旅人",
+                meditation: "歩行瞑想",
+                catch: "歩む道そのものが瞑想になる、リズムの実践家",
+                story: "霧が晴れていく——あなたに宿るルーンは、ライド ᚱ。止まって考えるより、歩きながら答えを見つける旅人。あなたの心は、進む足音のリズムの中で整っていく。",
+                future: "いつもの散歩が、心を整える儀式に変わる——歩くたび、あなたは自分に戻ってこられる。",
+                about: "体を動かしながらのほうが頭が回るタイプのようです。じっと座る瞑想が苦手でも、心配いりません。あなたの瞑想は「動きの中」にあります。むしろ、それがあなたの強みです。",
+                strengths: ["行動力があり、切り替えが早い", "体感でつかむのが得意", "悩むより動いて、答えにたどり着ける"],
+                habits: ["じっとしているとそわそわしやすい", "「落ち着きがない」と誤解されることも"],
+                pitfalls: ["休むことに罪悪感があって、結局予定を入れてしまう", "「じっと座る瞑想」に挫折して、自分は向いてないと思い込む"],
+                whyHeading: "ライドが導く瞑想 —— 歩行瞑想",
+                why: "足裏の感覚や歩くリズムは、座る瞑想での「呼吸」と同じ、心の戻る場所。動きたい性質と瞑想を、無理なく両立できるスタイルです。",
+                recs: ["歩行瞑想", "マインドフルウォーキング", "ヨガ・ストレッチ瞑想"],
+                ritual: ["10分の散歩を「ながらスマホなし」で歩く", "足裏が地面に着く感覚に、意識を向ける——一歩ずつ", "考えごとに気づいたら、また足裏に戻る"],
+                ctaNote: "ライドのあなたへ、歩きながら聴ける3分瞑想音声を準備しています。"
+            },
+            gebo: {
+                glyph: "ᚷ",
+                name: "ギューフの灯",
+                meditation: "慈悲の瞑想",
+                catch: "ぬくもりを分かち合う、やさしき灯の人",
+                story: "霧が晴れていく——あなたに宿るルーンは、ギューフ ᚷ。旅路で出会う人の心に、そっと灯をともす旅人。そのやさしさは、あなた自身にも向けられるのを待っている。",
+                future: "人に注いできたやさしさが、あなた自身を満たし始める——もう、すり減らない。",
+                about: "人とのつながりを大切にし、相手の気持ちの変化によく気づくタイプのようです。共感力が高いぶん、まわりの感情の影響を受けて疲れやすい面も。そのやさしさを自分自身にも向けてあげることが、あなたの心を守る鍵になります。",
+                strengths: ["共感力が高く、信頼されやすい", "人の気持ちにそっと寄り添える", "場をあたたかくまとめられる"],
+                habits: ["他人優先で、自分のことが後回しになりやすい", "人の感情を「もらって」疲れてしまうことがある"],
+                pitfalls: ["「大丈夫？」と聞かれると、反射で「大丈夫」と答えてしまう", "人の予定を優先して、自分の充電があと回しになる"],
+                whyHeading: "ギューフが導く瞑想 —— 慈悲の瞑想",
+                why: "慈悲の瞑想は、人に向けているやさしさの矢印を、自分にも向ける練習。人を想う力がもともと強いあなたほど、なじみやすく、変化を感じやすいスタイルです。",
+                recs: ["メッタ（慈悲）瞑想", "感謝の瞑想", "思いやりの瞑想"],
+                ritual: ["寝る前に「私が穏やかでありますように」と心の中で3回唱える", "大切な人を思い浮かべて、同じ言葉を贈る", "最初は照れくさくてもOK。続けるうちに自然になじみます"],
+                ctaNote: "ギューフのあなたへ、やさしさの3分瞑想音声を準備しています。"
+            },
+            dagaz: {
+                glyph: "ᛞ",
+                name: "ダガズの夢見",
+                meditation: "イメージ瞑想",
+                catch: "夜明けの風景を心に描く、想像力の旅人",
+                story: "霧が晴れていく——あなたに宿るルーンは、ダガズ ᛞ。まだ誰も見たことのない夜明けを、心の中に描ける旅人。その想像力は、あなたを守る風景にも、未来をひらく光にもなる。",
+                future: "不安を描いていた想像力が、安心を描き始める——心の中に、いつでも帰れる場所ができる。",
+                about: "想像力が豊かで、物事を映像や物語として捉えるのが得意なタイプのようです。良いイメージは大きな力になる一方で、不安な場面を繰り返し思い浮かべてしまうことも。その想像力を「安心をつくる方向」に使えたら、最強です。",
+                strengths: ["創造力・発想力が豊か", "感受性が高く、世界を深く味わえる", "ゴールをイメージすると力を発揮できる"],
+                habits: ["嫌な場面を頭の中でリピート再生しやすい", "現実よりも想像が先行してしまうことがある"],
+                pitfalls: ["寝る前に、最悪のシナリオを上映してしまう", "考えごとが空想に飛んで、気づけば30分たっている"],
+                whyHeading: "ダガズが導く瞑想 —— イメージ瞑想",
+                why: "イメージする力は、そのまま瞑想の才能。誘導瞑想やビジュアライゼーションなら、あなたの想像力を「不安」ではなく「安心」をつくるために使えます。",
+                recs: ["ビジュアライゼーション", "イメージ誘導瞑想", "理想の未来瞑想"],
+                ritual: ["「安心できる場所」をひとつ決める（実在でも、架空でもOK）", "その場所の光・音・匂いまで、できるだけ具体的に思い描く", "不安なイメージが浮かんだら、その場所に「帰る」と決めておく"],
+                ctaNote: "ダガズのあなたへ、夢見の3分瞑想音声を準備しています。"
+            }
+        };
+
+        /* 紙芝居：各場面のイラスト（SVG） */
+        const SVG_OPEN = '<svg viewBox="0 0 480 220" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">';
+
+        const SCENES = [
+            // Q1: 道しるべ
+            SVG_OPEN +
+            '<defs><linearGradient id="s1-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1ea"/><stop offset="1" stop-color="#f7f6f2"/></linearGradient></defs>' +
+            '<rect width="480" height="220" fill="url(#s1-sky)"/>' +
+            '<ellipse cx="240" cy="214" rx="320" ry="56" fill="#e3e8df"/>' +
+            '<polygon points="40,150 58,98 76,150" fill="#c9d6c3"/><polygon points="396,148 412,104 428,148" fill="#c9d6c3"/>' +
+            '<polygon points="-6,180 30,72 66,180" fill="#4a6741"/><polygon points="414,180 450,76 486,180" fill="#4a6741"/>' +
+            '<polygon points="86,168 108,96 130,168" fill="#6a8b60"/><polygon points="350,168 372,100 394,168" fill="#6a8b60"/>' +
+            '<path d="M236,170 C214,190 186,204 150,220 L186,220 C214,204 234,192 244,178 Z" fill="#efe8da"/>' +
+            '<path d="M244,170 C266,190 294,204 330,220 L294,220 C266,204 246,192 240,178 Z" fill="#efe8da"/>' +
+            '<rect x="251" y="112" width="6" height="60" rx="2" fill="#7a6a55"/>' +
+            '<rect x="257" y="116" width="46" height="13" rx="3" fill="#8a7a62"/>' +
+            '<rect x="206" y="136" width="45" height="13" rx="3" fill="#9a8a72"/>' +
+            '</svg>',
+            // Q2: 泉
+            SVG_OPEN +
+            '<defs><linearGradient id="s2-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9efe9"/><stop offset="1" stop-color="#f6f5f1"/></linearGradient></defs>' +
+            '<rect width="480" height="220" fill="url(#s2-sky)"/>' +
+            '<circle cx="120" cy="52" r="40" fill="#f3e9d8" opacity="0.55"/>' +
+            '<ellipse cx="240" cy="216" rx="330" ry="60" fill="#dfe6da"/>' +
+            '<polygon points="24,140 44,80 64,140" fill="#9db392"/><polygon points="416,140 436,84 456,140" fill="#9db392"/>' +
+            '<polygon points="-10,168 28,56 66,168" fill="#4a6741"/><polygon points="414,168 452,60 490,168" fill="#4a6741"/>' +
+            '<polygon points="76,150 96,92 116,150" fill="#6a8b60"/><polygon points="364,150 384,96 404,150" fill="#6a8b60"/>' +
+            '<ellipse cx="240" cy="178" rx="118" ry="28" fill="#cfe0dc"/>' +
+            '<ellipse cx="240" cy="178" rx="76" ry="17" fill="none" stroke="#b8d0ca" stroke-width="2"/>' +
+            '<ellipse cx="240" cy="178" rx="38" ry="8" fill="none" stroke="#b8d0ca" stroke-width="1.5"/>' +
+            '<ellipse cx="262" cy="170" rx="20" ry="4" fill="#eaf2ee" opacity="0.8"/>' +
+            '<circle cx="116" cy="190" r="7" fill="#aab5a5"/><circle cx="132" cy="196" r="5" fill="#b8c2b3"/><circle cx="356" cy="192" r="6" fill="#aab5a5"/>' +
+            '</svg>',
+            // Q3: 霧
+            SVG_OPEN +
+            '<defs><linearGradient id="s3-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe5dd"/><stop offset="1" stop-color="#eceeea"/></linearGradient></defs>' +
+            '<rect width="480" height="220" fill="url(#s3-sky)"/>' +
+            '<polygon points="40,190 70,60 100,190" fill="#4a6741" opacity="0.32"/>' +
+            '<polygon points="130,200 158,84 186,200" fill="#4a6741" opacity="0.22"/>' +
+            '<polygon points="300,196 328,76 356,196" fill="#4a6741" opacity="0.26"/>' +
+            '<polygon points="390,190 420,64 450,190" fill="#4a6741" opacity="0.34"/>' +
+            '<polygon points="220,206 244,108 268,206" fill="#4a6741" opacity="0.14"/>' +
+            '<path d="M214,220 C230,204 242,196 240,184 L250,184 C248,196 258,204 272,220 Z" fill="#efe8da" opacity="0.5"/>' +
+            '<rect x="-20" y="74" width="520" height="30" rx="15" fill="#f4f5f2" opacity="0.85"/>' +
+            '<rect x="-40" y="116" width="560" height="34" rx="17" fill="#f4f5f2" opacity="0.7"/>' +
+            '<rect x="-20" y="158" width="520" height="30" rx="15" fill="#f4f5f2" opacity="0.6"/>' +
+            '</svg>',
+            // Q4: 焚き火の夜
+            SVG_OPEN +
+            '<defs><linearGradient id="s4-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2a20"/><stop offset="0.6" stop-color="#2c362a"/><stop offset="1" stop-color="#3a4a36"/></linearGradient></defs>' +
+            '<rect width="480" height="220" fill="url(#s4-sky)"/>' +
+            '<circle cx="64" cy="38" r="1.6" fill="#e8ede7" opacity="0.8"/><circle cx="142" cy="62" r="1.2" fill="#e8ede7" opacity="0.6"/><circle cx="210" cy="30" r="1.4" fill="#e8ede7" opacity="0.7"/><circle cx="318" cy="48" r="1.2" fill="#e8ede7" opacity="0.6"/><circle cx="388" cy="26" r="1.7" fill="#e8ede7" opacity="0.8"/><circle cx="438" cy="70" r="1.2" fill="#e8ede7" opacity="0.5"/><circle cx="266" cy="74" r="1" fill="#e8ede7" opacity="0.5"/>' +
+            '<polygon points="-10,200 32,58 74,200" fill="#18211a"/><polygon points="406,200 448,62 490,200" fill="#18211a"/>' +
+            '<polygon points="70,190 100,86 130,190" fill="#1c2620"/><polygon points="350,190 380,90 410,190" fill="#1c2620"/>' +
+            '<rect x="0" y="182" width="480" height="38" fill="#243023"/>' +
+            '<circle cx="240" cy="172" r="84" fill="#c28f79" opacity="0.10"/>' +
+            '<circle cx="240" cy="172" r="52" fill="#c28f79" opacity="0.16"/>' +
+            '<rect x="218" y="180" width="44" height="7" rx="3.5" fill="#5a4636" transform="rotate(10 240 183)"/>' +
+            '<rect x="218" y="180" width="44" height="7" rx="3.5" fill="#6a5440" transform="rotate(-10 240 183)"/>' +
+            '<path d="M240,180 C229,164 233,150 240,136 C247,150 251,164 240,180 Z" fill="#c28f79" opacity="0.95"/>' +
+            '<path d="M240,178 C234,166 236,157 240,148 C244,157 246,166 240,178 Z" fill="#dfa988"/>' +
+            '<path d="M240,176 C237,169 238,164 240,158 C242,164 243,169 240,176 Z" fill="#f0d9c4"/>' +
+            '<circle cx="252" cy="142" r="1.6" fill="#e0b09a" opacity="0.9"/><circle cx="231" cy="132" r="1.3" fill="#e0b09a" opacity="0.7"/>' +
+            '</svg>',
+            // Q5: 焚き火と旅人
+            SVG_OPEN +
+            '<defs><linearGradient id="s5-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2a20"/><stop offset="0.6" stop-color="#2c362a"/><stop offset="1" stop-color="#3a4a36"/></linearGradient></defs>' +
+            '<rect width="480" height="220" fill="url(#s5-sky)"/>' +
+            '<circle cx="96" cy="34" r="1.5" fill="#e8ede7" opacity="0.7"/><circle cx="186" cy="56" r="1.2" fill="#e8ede7" opacity="0.6"/><circle cx="298" cy="34" r="1.5" fill="#e8ede7" opacity="0.7"/><circle cx="404" cy="52" r="1.2" fill="#e8ede7" opacity="0.5"/>' +
+            '<polygon points="-10,200 30,64 70,200" fill="#18211a"/><polygon points="410,200 452,68 494,200" fill="#18211a"/>' +
+            '<rect x="0" y="184" width="480" height="36" fill="#243023"/>' +
+            '<circle cx="200" cy="172" r="70" fill="#c28f79" opacity="0.12"/>' +
+            '<rect x="182" y="182" width="38" height="6" rx="3" fill="#5a4636" transform="rotate(9 201 185)"/>' +
+            '<rect x="182" y="182" width="38" height="6" rx="3" fill="#6a5440" transform="rotate(-9 201 185)"/>' +
+            '<path d="M201,181 C192,167 195,155 201,143 C207,155 210,167 201,181 Z" fill="#c28f79" opacity="0.95"/>' +
+            '<path d="M201,179 C196,169 197,161 201,153 C205,161 206,169 201,179 Z" fill="#f0d9c4"/>' +
+            '<ellipse cx="306" cy="172" rx="13" ry="19" fill="#161f17"/>' +
+            '<circle cx="306" cy="146" r="8" fill="#161f17"/>' +
+            '<circle cx="332" cy="150" r="5" fill="#e0b486" opacity="0.85"/>' +
+            '<circle cx="332" cy="150" r="14" fill="#e0b486" opacity="0.18"/>' +
+            '</svg>',
+            // Q6: 夕暮れの道
+            SVG_OPEN +
+            '<defs><linearGradient id="s6-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8a98f"/><stop offset="0.55" stop-color="#b08a76"/><stop offset="1" stop-color="#6e6258"/></linearGradient></defs>' +
+            '<rect width="480" height="220" fill="url(#s6-sky)"/>' +
+            '<circle cx="150" cy="112" r="42" fill="#ecc7a4" opacity="0.4"/>' +
+            '<circle cx="150" cy="112" r="24" fill="#ecc7a4" opacity="0.95"/>' +
+            '<ellipse cx="120" cy="208" rx="260" ry="48" fill="#5a5348"/>' +
+            '<ellipse cx="400" cy="216" rx="240" ry="52" fill="#463f37"/>' +
+            '<polygon points="36,176 58,104 80,176" fill="#3c382f"/><polygon points="392,170 416,92 440,170" fill="#3c382f"/><polygon points="440,180 458,120 476,180" fill="#332f28"/>' +
+            '<path d="M188,220 C246,198 204,174 252,156 L260,156 C224,176 272,198 330,220 Z" fill="#c8b49e" opacity="0.85"/>' +
+            '<rect x="0" y="128" width="480" height="14" fill="#e8c9ab" opacity="0.22"/>' +
+            '</svg>',
+            // Q7: 朝の光
+            SVG_OPEN +
+            '<defs><linearGradient id="s7-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6ead7"/><stop offset="1" stop-color="#f3f2ec"/></linearGradient></defs>' +
+            '<rect width="480" height="220" fill="url(#s7-sky)"/>' +
+            '<circle cx="240" cy="86" r="62" fill="#ecc9a0" opacity="0.30"/>' +
+            '<circle cx="240" cy="86" r="30" fill="#ecc9a0" opacity="0.95"/>' +
+            '<line x1="240" y1="22" x2="240" y2="40" stroke="#ecc9a0" stroke-width="2.5" opacity="0.55"/>' +
+            '<line x1="186" y1="44" x2="198" y2="58" stroke="#ecc9a0" stroke-width="2.5" opacity="0.55"/>' +
+            '<line x1="294" y1="44" x2="282" y2="58" stroke="#ecc9a0" stroke-width="2.5" opacity="0.55"/>' +
+            '<line x1="166" y1="92" x2="184" y2="92" stroke="#ecc9a0" stroke-width="2.5" opacity="0.45"/>' +
+            '<line x1="314" y1="92" x2="296" y2="92" stroke="#ecc9a0" stroke-width="2.5" opacity="0.45"/>' +
+            '<path d="M150,52 q6,-7 12,0 q6,-7 12,0" fill="none" stroke="#6a7a66" stroke-width="2" stroke-linecap="round"/>' +
+            '<path d="M330,40 q5,-6 10,0 q5,-6 10,0" fill="none" stroke="#6a7a66" stroke-width="2" stroke-linecap="round"/>' +
+            '<ellipse cx="240" cy="216" rx="330" ry="58" fill="#e7ecdf"/>' +
+            '<polygon points="20,158 44,92 68,158" fill="#9db392"/><polygon points="412,158 436,96 460,158" fill="#9db392"/>' +
+            '<polygon points="-8,184 28,72 64,184" fill="#6a8b60"/><polygon points="416,184 452,76 488,184" fill="#6a8b60"/>' +
+            '<rect x="0" y="148" width="480" height="16" fill="#ffffff" opacity="0.4"/>' +
+            '<path d="M206,220 C228,198 238,186 235,168 L249,168 C246,186 258,198 282,220 Z" fill="#f2ecdf"/>' +
+            '</svg>'
+        ];
+
+        const QUESTIONS = [
+            {
+                text: "森の入口で、古びた地図を手渡された。あなたはまず……",
+                choices: [
+                    ["地図の記号をひとつずつ確かめながら、慎重に進む", "isa"],
+                    ["地図はポケットへ。歩きながら道を覚える", "raido"],
+                    ["近くの高台に登り、森の全体を見渡す", "ansuz"],
+                    ["森の番人を探して、道を尋ねる", "gebo"],
+                    ["地図の先にある景色を想像してから、歩き出す", "dagaz"]
+                ]
+            },
+            {
+                text: "歩き疲れて、泉のほとりでひと休み。一番心地いい過ごし方は……",
+                choices: [
+                    ["泉のまわりをゆっくり歩いて、景色を楽しむ", "raido"],
+                    ["遠くにいる大切な人のことを、ふと想う", "gebo"],
+                    ["温かい飲み物を淹れて、静かに座る", "isa"],
+                    ["水面に映る空を眺めて、空想にふける", "dagaz"],
+                    ["鳥の声、風の匂い——泉の「今」をただ味わう", "ansuz"]
+                ]
+            },
+            {
+                text: "突然、深い霧が立ちこめて道が見えなくなった。あなたは……",
+                choices: [
+                    ["立ち止まり、深呼吸して心を落ち着ける", "isa"],
+                    ["霧の流れや風向きを観察して、状況をつかむ", "ansuz"],
+                    ["霧の晴れた先の景色を思い描いて、気持ちを保つ", "dagaz"],
+                    ["「誰かいますかー！」仲間と声を掛け合う", "gebo"],
+                    ["止まらない。足元を確かめながら一歩ずつ進む", "raido"]
+                ]
+            },
+            {
+                text: "夜、焚き火のそばで明日の支度。集中したいとき、あなたは……",
+                choices: [
+                    ["明日うまくいく場面を思い描いてから始める", "dagaz"],
+                    ["軽く体を動かして、エンジンをかける", "raido"],
+                    ["荷物をぜんぶ並べて、全体を確かめてから", "ansuz"],
+                    ["いつもの手順で、ひとつずつ整える", "isa"],
+                    ["「あの人のためにも」と思うと、力が湧く", "gebo"]
+                ]
+            },
+            {
+                text: "焚き火に、見知らぬ旅人がやってきた。あなたは……",
+                choices: [
+                    ["表情から、相手の疲れ具合や気持ちを察する", "gebo"],
+                    ["まずは静かに、相手の話に耳を傾ける", "ansuz"],
+                    ["「少し一緒に歩きませんか」と誘ってみる", "raido"],
+                    ["焚き火を挟んで、ぽつぽつと深い話をする", "isa"],
+                    ["相手の旅の話から、見たことのない景色を想像する", "dagaz"]
+                ]
+            },
+            {
+                text: "長旅の疲れがたまってきた。最初に出るサインは……",
+                choices: [
+                    ["じっとしていられず、そわそわする", "raido"],
+                    ["ため息が増えて、呼吸が浅くなる", "isa"],
+                    ["嫌な場面が、何度も頭の中でよみがえる", "dagaz"],
+                    ["頭の中がざわざわして、考えが止まらない", "ansuz"],
+                    ["無性に人恋しくなる。または誰にも会いたくなくなる", "gebo"]
+                ]
+            },
+            {
+                text: "旅の最終日の朝。目覚めて最初にしたいことは……",
+                choices: [
+                    ["今日の旅路のいい場面を、心に思い描く", "dagaz"],
+                    ["旅で出会った人たちを思い出して、感謝する", "gebo"],
+                    ["朝の森を、ひとりゆっくり歩く", "raido"],
+                    ["温かいお茶と、静かなひととき", "isa"],
+                    ["窓の外の光と空気の変化を、じっと感じる", "ansuz"]
+                ]
+            }
+        ];
+
+        const TIE_PRIORITY = ["isa", "ansuz", "raido", "gebo", "dagaz"];
+        const Q2_INDEX = 1; // 同点時はQ2の回答ルーンを優先
+
+        // リザストの読者登録ページURL（ルーン別）。決まり次第ここに貼るだけで反映される。
+        // 空のままだとボタンは「準備中」表示になる。
+        const LETTER_URLS = {
+            isa: "",
+            ansuz: "",
+            raido: "",
+            gebo: "",
+            dagaz: ""
+        };
+
+        /* ========== STATE ========== */
+        let current = 0;
+        let answers = [];
+        let resultKey = null;
+        let qRenderedAt = 0; // 画面切替直後の誤タップ（ダブルタップ等）を無視するための時刻
+
+        /* ========== SCREENS ========== */
+        const screens = {
+            intro: document.getElementById("screenIntro"),
+            question: document.getElementById("screenQuestion"),
+            reveal: document.getElementById("screenReveal"),
+            result: document.getElementById("screenResult")
+        };
+
+        function show(name) {
+            Object.values(screens).forEach(s => s.classList.remove("screen--active"));
+            screens[name].classList.add("screen--active");
+            window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+        }
+
+        /* ========== FLOW ========== */
+        function startJourney() {
+            current = 0;
+            answers = [];
+            renderQuestion();
+            show("question");
+        }
+
+        function renderQuestion() {
+            const q = QUESTIONS[current];
+
+            // progress
+            const bar = document.getElementById("progressBar");
+            bar.innerHTML = "";
+            for (let i = 0; i < QUESTIONS.length; i++) {
+                if (i > 0) {
+                    const path = document.createElement("div");
+                    path.className = "progress-path" + (i <= current ? " done" : "");
+                    bar.appendChild(path);
+                }
+                const dot = document.createElement("div");
+                dot.className = "progress-dot" + (i < current ? " done" : i === current ? " now" : "");
+                bar.appendChild(dot);
+            }
+
+            document.getElementById("sceneLabel").textContent = `Scene ${current + 1} / ${QUESTIONS.length}`;
+            document.getElementById("qScene").innerHTML = SCENES[current];
+            document.getElementById("qText").textContent = q.text;
+
+            const box = document.getElementById("choices");
+            box.innerHTML = "";
+            q.choices.forEach(([label, key]) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "choice";
+                btn.textContent = label;
+                btn.onclick = () => pick(btn, key);
+                box.appendChild(btn);
+            });
+
+            // re-trigger card animation
+            const card = document.getElementById("qCard");
+            card.style.animation = "none";
+            void card.offsetWidth;
+            card.style.animation = "";
+
+            qRenderedAt = Date.now();
+        }
+
+        function pick(btn, key) {
+            if (Date.now() - qRenderedAt < 350) return; // 切替直後の誤タップを無視
+            document.querySelectorAll(".choice").forEach(c => (c.disabled = true));
+            btn.classList.add("picked");
+            answers.push(key);
+
+            setTimeout(() => {
+                if (current < QUESTIONS.length - 1) {
+                    current++;
+                    renderQuestion();
+                } else {
+                    resultKey = judge(answers);
+                    startReveal(resultKey);
+                }
+            }, 360);
+        }
+
+        /* ========== JUDGE ========== */
+        function judge(ans) {
+            const score = {};
+            TIE_PRIORITY.forEach(k => (score[k] = 0));
+            ans.forEach(k => score[k]++);
+
+            const max = Math.max(...Object.values(score));
+            const tied = TIE_PRIORITY.filter(k => score[k] === max);
+
+            if (tied.length === 1) return tied[0];
+            if (tied.includes(ans[Q2_INDEX])) return ans[Q2_INDEX];
+            return tied[0]; // TIE_PRIORITY順の先頭
+        }
+
+        /* ========== REVEAL ========== */
+        function startReveal(key) {
+            const r = RUNES[key];
+            document.getElementById("rvRune").textContent = r.glyph;
+            document.getElementById("rvName").textContent = r.name;
+
+            ["rvLine1", "rvLine2", "rvRune", "rvName", "rvBtn"].forEach(id =>
+                document.getElementById(id).classList.remove("show"));
+            screens.reveal.classList.remove("cleared");
+
+            show("reveal");
+
+            setTimeout(() => document.getElementById("rvLine1").classList.add("show"), 400);
+            setTimeout(() => screens.reveal.classList.add("cleared"), 1500);
+            setTimeout(() => document.getElementById("rvLine2").classList.add("show"), 1900);
+            setTimeout(() => document.getElementById("rvRune").classList.add("show"), 3300);
+            setTimeout(() => document.getElementById("rvName").classList.add("show"), 4500);
+            setTimeout(() => document.getElementById("rvBtn").classList.add("show"), 5300);
+        }
+
+        /* ========== RESULT ========== */
+        function showResult() {
+            renderResult(resultKey);
+            show("result");
+        }
+
+        function renderResult(key) {
+            const r = RUNES[key];
+            document.getElementById("resRune").textContent = r.glyph;
+            document.getElementById("resName").textContent = r.name;
+            document.getElementById("resMeditation").textContent = "— " + r.meditation + " —";
+            document.getElementById("resCatch").textContent = r.catch;
+            document.getElementById("resStory").textContent = r.story;
+            document.getElementById("resFuture").textContent = r.future;
+            document.getElementById("resAbout").textContent = r.about;
+
+            const pitfallList = document.getElementById("resPitfalls");
+            pitfallList.innerHTML = "";
+            r.pitfalls.forEach(t => {
+                const li = document.createElement("li");
+                li.textContent = t;
+                pitfallList.appendChild(li);
+            });
+
+            // 手紙セクション
+            document.getElementById("letterSeal").textContent = r.glyph;
+            document.getElementById("letterRune").textContent = "「" + r.name + "」";
+            document.getElementById("letterWhy").textContent = "なぜ「" + r.meditation + "」があなたに合うのか";
+
+            const letterBtn = document.getElementById("letterBtn");
+            const letterUrl = LETTER_URLS[key];
+            if (letterUrl) {
+                letterBtn.href = letterUrl;
+                letterBtn.removeAttribute("aria-disabled");
+                letterBtn.textContent = "手紙を受け取る（無料）";
+            } else {
+                letterBtn.href = "#";
+                letterBtn.setAttribute("aria-disabled", "true");
+                letterBtn.textContent = "手紙を受け取る（準備中）";
+                letterBtn.onclick = (e) => e.preventDefault();
+            }
+
+            // share
+            const url = location.origin + location.pathname + "?r=" + key;
+            const text = `私に宿るルーンは「${r.name} ${r.glyph}」でした。\nあなたに合う瞑想法がわかる #ルーン瞑想診断`;
+            document.getElementById("shareX").href =
+                "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
+        }
+
+        function copyShare() {
+            const r = RUNES[resultKey];
+            const url = location.origin + location.pathname + "?r=" + resultKey;
+            const text = `私に宿るルーンは「${r.name} ${r.glyph}」でした。 ${url}`;
+            if (navigator.share) {
+                navigator.share({ title: "ルーン瞑想診断", text, url }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    const b = document.getElementById("shareCopy");
+                    b.textContent = "コピーしました ✓";
+                    setTimeout(() => (b.textContent = "リンクをコピー"), 2000);
+                });
+            }
+        }
+
+        function restart() {
+            history.replaceState(null, "", location.pathname);
+            current = 0;
+            answers = [];
+            resultKey = null;
+            show("intro");
+        }
+
+        /* ========== SHARED-LINK LANDING ========== */
+        (function init() {
+            const param = new URLSearchParams(location.search).get("r");
+            if (param && RUNES[param]) {
+                resultKey = param;
+                renderResult(param);
+                show("result");
+                // シェアから来た人向け：診断への導線を手紙の上に追加
+                const letter = document.getElementById("letterArea");
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "btn-cta btn-cta--main";
+                btn.style.marginBottom = "14px";
+                btn.textContent = "私も森へ入る（診断する）";
+                btn.onclick = restart;
+                letter.parentNode.insertBefore(btn, letter);
+            }
+        })();
+    </script>
+</body>
+</html>
