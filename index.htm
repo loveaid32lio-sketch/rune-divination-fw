@@ -328,6 +328,85 @@
             margin-bottom: 0;
         }
 
+        /* ===== MODE SELECT ===== */
+        .mode-section {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 24px 8px;
+            text-align: center;
+        }
+        .mode-eyebrow {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .mode-lead {
+            font-size: 15px;
+            color: var(--text-main);
+            line-height: 1.9;
+            letter-spacing: 0.08em;
+            margin-bottom: 28px;
+        }
+        .mode-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .mode-card {
+            width: 100%;
+            text-align: left;
+            background: var(--beige);
+            border: 1px solid rgba(122, 140, 118, 0.3);
+            border-radius: 12px;
+            padding: 20px 22px;
+            cursor: pointer;
+            transition: border-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+            -webkit-tap-highlight-color: transparent;
+            font-family: 'Shippori Mincho', serif;
+        }
+        .mode-card:hover {
+            border-color: var(--green-mid);
+            box-shadow: 0 6px 20px rgba(74, 103, 65, 0.08);
+        }
+        .mode-card:active { transform: scale(0.99); }
+        .mode-card-tag {
+            display: inline-block;
+            font-size: 10px;
+            letter-spacing: 0.25em;
+            color: var(--accent);
+            margin-bottom: 10px;
+            padding-left: 2px;
+        }
+        .mode-card-title {
+            font-size: 16px;
+            color: var(--dark);
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mode-card-num {
+            display: inline-flex;
+            width: 26px; height: 26px;
+            align-items: center; justify-content: center;
+            border-radius: 50%;
+            background: var(--green-deep);
+            color: var(--green-light);
+            font-size: 12px;
+            flex: 0 0 auto;
+        }
+        .mode-card-desc {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+            display: block;
+        }
+
         .btn-draw {
             width: 100%;
             padding: 16px;
@@ -667,8 +746,26 @@
         </div>
     </section>
 
+    <!-- MODE SELECT -->
+    <section class="mode-section" id="modeSelect">
+        <p class="mode-eyebrow">Choose</p>
+        <p class="mode-lead">今日は、どんなふうに引きますか。</p>
+        <div class="mode-cards">
+            <button class="mode-card" type="button" onclick="selectMode('question')">
+                <span class="mode-card-tag">占い ／ DIVINATION</span>
+                <span class="mode-card-title"><span class="mode-card-num">A</span>問いを持って引く</span>
+                <span class="mode-card-desc">知りたいこと・気がかりを、そっと心に思い浮かべてから引きます。浮かんできたものが、その問いへの答えになります。</span>
+            </button>
+            <button class="mode-card" type="button" onclick="selectMode('empty')">
+                <span class="mode-card-tag">瞑想 ／ MEDITATION</span>
+                <span class="mode-card-title"><span class="mode-card-num">B</span>ゆだねて引く</span>
+                <span class="mode-card-desc">頭を空っぽにして、ただ呼吸をゆるめて引きます。そのまま、瞑想のように今の自分を感じていきます。</span>
+            </button>
+        </div>
+    </section>
+
     <!-- RUNE SECTION -->
-    <section class="rune-section">
+    <section class="rune-section" id="runeSection" style="display:none;">
         <p class="rune-section-label">Draw a Rune</p>
 
         <!-- CARD -->
@@ -747,11 +844,12 @@
     <!-- LINE CTA -->
     <section class="line-section">
         <p class="line-eyebrow">Go Deeper</p>
-        <h2 class="line-title">もっと深く、<br>ルーンと向き合う</h2>
+        <h2 class="line-title">受け取ったものを、<br>自分の力にする</h2>
         <div class="line-divider"></div>
-        <p class="line-body">LINE公式アカウントの友達登録で、25枚すべてのルーンの詳細な意味・逆位置・実践的なメッセージが読めます。あなたのルーンが示す深いメッセージを、一緒に受け取っていきましょう。</p>
+        <p class="line-body">ルーンが映したのは、あなたの内側にもともとあったもの。その感覚をさらに深く掘り下げ、繰り返す悩みや人生のパターンごと整えていくのが、わたしのヒプノセラピーです。</p>
+        <p class="line-body">「なんだか気になる」——それも、ひとつの直感のサインかもしれません。急かしません。気が向いたときに、LINEからそっとのぞいてみてください。</p>
         <a href="https://lin.ee/yMMcwya" class="btn-line" target="_blank" rel="noopener">
-            友達追加して詳細を見る
+            LINEでつながる
         </a>
         <p class="line-note">LINE公式アカウント ・ 登録無料</p>
     </section>
@@ -920,6 +1018,22 @@
         const noReversed = ["Gebo", "Hagalaz", "Isa", "Jera", "Eihwaz", "Sowilo", "Ingwaz", "Dagaz", "Blank"];
 
         let drawn = false;
+        let currentMode = null;
+
+        const modeInstructions = {
+            question: 'あなたの問いを、そっと心に置いて。<br>準備ができたら、カードをタップ',
+            empty: 'ひと呼吸、息をゆるめて。<br>何も考えず、カードをタップ'
+        };
+
+        function selectMode(mode) {
+            currentMode = mode;
+            document.getElementById('modeSelect').style.display = 'none';
+            const rs = document.getElementById('runeSection');
+            rs.style.display = 'block';
+            const instr = document.querySelector('#drawInstruction p');
+            if (instr) instr.innerHTML = modeInstructions[mode];
+            rs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         function drawRune() {
             if (drawn) return;
@@ -1000,6 +1114,15 @@
             document.getElementById('btnDraw').style.display = 'block';
             document.getElementById('btnReset').style.display = 'none';
             document.getElementById('drawInstruction').style.display = 'block';
+
+            // 引き方の選択へ戻る
+            currentMode = null;
+            setTimeout(() => {
+                document.getElementById('runeSection').style.display = 'none';
+                const ms = document.getElementById('modeSelect');
+                ms.style.display = 'block';
+                ms.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 520);
         }
     </script>
 
